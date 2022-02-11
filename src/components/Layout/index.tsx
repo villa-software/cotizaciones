@@ -5,6 +5,8 @@ import { FunctionComponent } from "react";
 import { Footer } from "../Footer";
 import { Topbar } from "../Topbar";
 
+import { themeStyled } from "../../styles/themes/styled";
+
 interface Props {
   title: string;
   children: ReactNode;
@@ -29,7 +31,12 @@ export const Layout = ({ title, children }: Props) => {
       <Topbar />
       <Box
         component="main"
-        style={{ padding: "1rem", maxWidth: "1024px", margin: "auto" }}
+        style={{
+          padding: "1rem",
+          width: "100%",
+          maxWidth: themeStyled.breakpoints.desktop,
+          margin: "auto",
+        }}
       >
         {children}
       </Box>

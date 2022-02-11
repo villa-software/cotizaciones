@@ -9,6 +9,8 @@ import Griddle, {
 import { Layout } from "../components/Layout";
 import { Select } from "../components/Select";
 
+import { themeStyled } from "../styles/themes/styled";
+
 const Home: NextPage = () => {
   const [currencyFrom, setCurrencyFrom] = useState<"USD" | "BRL" | "PYG">(
     "USD"
@@ -16,6 +18,26 @@ const Home: NextPage = () => {
   const [currencyTo, setCurrencyTo] = useState<"USD" | "BRL" | "PYG">("USD");
 
   var data = [
+    {
+      currencyExchange: "Santa Rita Câmbios",
+      buy: 6980,
+      sell: 6580,
+    },
+    {
+      currencyExchange: "Câmbios Chaco",
+      buy: 6980,
+      sell: 6580,
+    },
+    {
+      currencyExchange: "Santa Rita Câmbios",
+      buy: 6980,
+      sell: 6580,
+    },
+    {
+      currencyExchange: "Câmbios Chaco",
+      buy: 6980,
+      sell: 6580,
+    },
     {
       currencyExchange: "Santa Rita Câmbios",
       buy: 6980,
@@ -48,9 +70,10 @@ const Home: NextPage = () => {
       <Box
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(2, 1fr)",
+          gridTemplateColumns: "1fr 1fr 2fr",
           gap: "1rem",
-          width: "12rem",
+          maxWidth: themeStyled.breakpoints.tablet,
+          margin: "0 auto 2rem auto",
         }}
       >
         <Select
@@ -65,17 +88,32 @@ const Home: NextPage = () => {
           setCurrency={setCurrencyTo}
           currency={currencyTo}
         />
+        <TextField label="Valor" id="outlined-start-adornment" fullWidth />
       </Box>
-
-      <TextField
-        label="Valor"
-        id="outlined-start-adornment"
-        sx={{ m: 1, width: "25ch" }}
-      />
 
       <Griddle
         data={data}
         plugins={[plugins.LocalPlugin]}
+        styleConfig={{
+          styles: {
+            Table: {
+              width: "100%",
+              textAlign: "left",
+              borderSpacing: "0",
+              maxWidth: themeStyled.breakpoints.tablet,
+              margin: "auto",
+            },
+            TableHeadingCell: {
+              padding: ".5rem",
+              borderBottom: "solid 1px #ddd",
+            },
+            Cell: {
+              padding: ".5rem",
+              borderBottom: "solid 1px #ddd",
+              borderSpacing: "0",
+            },
+          },
+        }}
         components={{
           Layout: ({ Table }: any) => <Table />,
         }}
