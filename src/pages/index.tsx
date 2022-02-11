@@ -8,6 +8,7 @@ import Griddle, {
 } from "griddle-react";
 import { Layout } from "../components/Layout";
 import { Select } from "../components/Select";
+import { Table } from "../components/Table";
 
 import { themeStyled } from "../styles/themes/styled";
 
@@ -45,6 +46,11 @@ const Home: NextPage = () => {
     },
     {
       currencyExchange: "Câmbios Chaco",
+      buy: 6980,
+      sell: 6580,
+    },
+    {
+      currencyExchange: "Santa Rita Câmbios",
       buy: 6980,
       sell: 6580,
     },
@@ -91,39 +97,23 @@ const Home: NextPage = () => {
         <TextField label="Valor" id="outlined-start-adornment" fullWidth />
       </Box>
 
-      <Griddle
+      <Table
         data={data}
-        plugins={[plugins.LocalPlugin]}
-        styleConfig={{
-          styles: {
-            Table: {
-              width: "100%",
-              textAlign: "left",
-              borderSpacing: "0",
-              maxWidth: themeStyled.breakpoints.tablet,
-              margin: "auto",
-            },
-            TableHeadingCell: {
-              padding: ".5rem",
-              borderBottom: "solid 1px #ddd",
-            },
-            Cell: {
-              padding: ".5rem",
-              borderBottom: "solid 1px #ddd",
-              borderSpacing: "0",
-            },
+        columnsDefinition={[
+          {
+            id: "currencyExchange",
+            title: "Casa de câmbio",
           },
-        }}
-        components={{
-          Layout: ({ Table }: any) => <Table />,
-        }}
-      >
-        <RowDefinition>
-          <ColumnDefinition id="currencyExchange" title="Casa de câmbio" />
-          <ColumnDefinition id="buy" title="Compra" />
-          <ColumnDefinition id="sell" title="Venda" />
-        </RowDefinition>
-      </Griddle>
+          {
+            id: "buy",
+            title: "Compra",
+          },
+          {
+            id: "sell",
+            title: "Venda",
+          },
+        ]}
+      />
     </Layout>
   );
 };
