@@ -1,9 +1,9 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
 import { useEffect } from 'react'
 import Script from 'next/script'
 import { useRouter } from 'next/router'
+// @ts-ignore
 import * as gtag from '../lib/gtag'
+import '../styles/globals.css'
 
 // @ts-ignore
 const App = ({ Component, pageProps }) => {
