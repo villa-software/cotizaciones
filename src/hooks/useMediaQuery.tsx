@@ -6,5 +6,5 @@ export const useMediaQuery = () => {
   const isDesktop = useMedia(`(min-width: ${themeStyled.breakpoints.desktop})`);
   const isTablet = useMedia(`(min-width: ${themeStyled.breakpoints.tablet})`);
 
-  return { isDesktop };
+  return { isDesktop, isTablet };
 };

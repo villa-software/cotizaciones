@@ -8,8 +8,8 @@ export default async (
 ) => {
   const { companyId } = req.query;
   const company = companies.find(c => Array.isArray(companyId) ? c.id === parseInt(companyId.join('')) : c.id === parseInt(companyId));
-  if(company) {
-      res.json(company);
+  if (company) {
+    res.json(company);
   }
   res.status(404);
 }

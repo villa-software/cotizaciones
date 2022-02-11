@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, ChangeEvent } from "react";
-import { Box, TextField, InputAdornment, MenuItem } from "@mui/material";
+import { TextField, MenuItem } from "@mui/material";
 
 type Currency = "USD" | "BRL" | "PYG";
 
