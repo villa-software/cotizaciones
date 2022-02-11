@@ -39,7 +39,16 @@ export const Topbar = () => {
   }, [router]);
 
   return (
-    <Box component="header" style={{ background: "#fff", padding: "1rem" }}>
+    <Box
+      component="header"
+      style={{
+        background: "#fff",
+        padding: "1rem",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+      }}
+    >
       Header
       <TextField
         id="outlined-select-currency"
@@ -47,7 +56,7 @@ export const Topbar = () => {
         value={currentLanguage}
         onChange={handleChange}
         style={{
-          width: "100%",
+          width: "5rem",
         }}
       >
         {languages.map((option: any) => (
