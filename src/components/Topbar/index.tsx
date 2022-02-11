@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 
 export const Topbar = () => {
   const [currentLanguage, setCurrentLanguage] = useState<"pt" | "es">("es");
-  const router = useRouter();
+  const { route, push: redirectTo } = useRouter();
 
   const languages: { value: "pt" | "es"; label: "PT" | "ES" }[] = [
     {
@@ -17,17 +17,14 @@ export const Topbar = () => {
     },
   ];
 
-  console.log({ router });
-
   const handleChange = (
     event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
-    router.push(`/${event.target.value}`);
+    redirectTo(`/${event.target.value}`);
   };
 
   useEffect(() => {
-    if (router) {
-      const { route } = router;
+    if (route) {
       const currentRoute = languages.find((language) =>
         route.includes(language.value)
       );
@@ -36,7 +33,7 @@ export const Topbar = () => {
         return currentRoute ? currentRoute.value : "es";
       });
     }
-  }, [router]);
+  }, [route]);
 
   return (
     <Box
