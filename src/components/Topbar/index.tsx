@@ -2,11 +2,13 @@ import { useState, ChangeEvent, useEffect } from "react";
 import { Box, TextField, MenuItem } from "@mui/material";
 import { useRouter } from "next/router";
 
+import { Languages } from "../../types";
+
 export const Topbar = () => {
-  const [currentLanguage, setCurrentLanguage] = useState<"pt" | "es">("es");
+  const [currentLanguage, setCurrentLanguage] = useState<Languages>("es");
   const { route, push: redirectTo } = useRouter();
 
-  const languages: { value: "pt" | "es"; label: "PT" | "ES" }[] = [
+  const languages: { value: Languages; label: "PT" | "ES" }[] = [
     {
       value: "pt",
       label: "PT",

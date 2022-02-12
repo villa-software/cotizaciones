@@ -14,8 +14,10 @@ import { Table } from "../Table";
 import { themeStyled } from "../../styles/themes/styled";
 import { languagesHome } from "./languages";
 
+import { Languages } from "../../types";
+
 interface Props {
-  language: "pt" | "es";
+  language: Languages;
 }
 
 const Home: NextPage<Props> = ({ language }) => {

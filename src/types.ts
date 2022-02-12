@@ -16,3 +16,5 @@ export type Office = {
     city: number;
     company: number;
 };
+
+export type Languages = "pt" | "es"
