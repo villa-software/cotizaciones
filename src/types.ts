@@ -3,6 +3,7 @@ export type Company = {
     id: number;
     name: string;
     baseUrl: string;
+    paths: any;
 };
 
 export type City = {
@@ -14,7 +15,7 @@ export type Office = {
     id: number;
     name: string;
     city: number;
-    company: number;
+    branchId: number;
 };
 
 export type Languages = "pt" | "es"
