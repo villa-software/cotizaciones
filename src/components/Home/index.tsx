@@ -1,6 +1,6 @@
+import { Box, TextField } from "@mui/material";
 import type { NextPage } from "next";
 import { useState } from "react";
-import { Box, TextField } from "@mui/material";
 
 import { Layout } from "../Layout";
 import { Select } from "../Select";
@@ -8,15 +8,15 @@ import { Table } from "../Table";
 import { MultipleSelect } from "../MultipleSelect";
 
 import { themeStyled } from "../../styles/themes/styled";
-import { languagesHome } from "./languages";
-
 import { Languages } from "../../types";
+import { languagesHome } from "./languages";
 
 interface Props {
   language: Languages;
+  data: any;
 }
 
-const Home: NextPage<Props> = ({ language }) => {
+const Home: NextPage<Props> = (props) => {
   const [currencyFrom, setCurrencyFrom] = useState<"USD" | "BRL" | "PYG">(
     "USD"
   );
@@ -24,45 +24,7 @@ const Home: NextPage<Props> = ({ language }) => {
   const [value, setValue] = useState();
 
   const { welcomeTitle, inputCurrencyFrom, inputCurrencyTo } =
-    languagesHome[language];
-
-  var data = [
-    {
-      currencyExchange: "Santa Rita Câmbios",
-      buy: 6980,
-      sell: 6580,
-    },
-    {
-      currencyExchange: "Câmbios Chaco",
-      buy: 6980,
-      sell: 6580,
-    },
-    {
-      currencyExchange: "Santa Rita Câmbios",
-      buy: 6980,
-      sell: 6580,
-    },
-    {
-      currencyExchange: "Câmbios Chaco",
-      buy: 6980,
-      sell: 6580,
-    },
-    {
-      currencyExchange: "Santa Rita Câmbios",
-      buy: 6980,
-      sell: 6580,
-    },
-    {
-      currencyExchange: "Câmbios Chaco",
-      buy: 6980,
-      sell: 6580,
-    },
-    {
-      currencyExchange: "Santa Rita Câmbios",
-      buy: 6980,
-      sell: 6580,
-    },
-  ];
+    languagesHome[props.language];
 
   const currencies = [
     {
@@ -152,19 +114,19 @@ const Home: NextPage<Props> = ({ language }) => {
           }}
         >
           <Table
-            data={data}
+            data={props.data}
             columnsDefinition={[
               {
-                id: "currencyExchange",
+                id: "company",
                 title: "Casa de câmbio",
               },
               {
-                id: "buy",
-                title: "Compra",
+                id: "dollar",
+                title: "USD",
               },
               {
-                id: "sell",
-                title: "Venda",
+                id: "real",
+                title: "BRL",
               },
             ]}
           />
