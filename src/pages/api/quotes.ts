@@ -8,22 +8,24 @@ const quotes = async (
 ) => {
     const chaco = await Promise.all(CHACO_OFFICES.map(async office => await axios.get(`https://www.cambioschaco.com.py/api/branch_office/${office.branchId}/exchange`)));
     const chacoData = chaco.map(item => ({ 
-        office: CHACO_OFFICES.find(office => office.branchId === item.data.branchOfficeId),
+        company: "CHACO",
+        office: CHACO_OFFICES.find(office => office.branchId === parseInt(item.data.branchOfficeId)),
         branchOfficeId: item.data.branchOfficeId,
-        dollar: item.data.items.find((currency:any) => currency.isoCode === 'USD'),
-        real: item.data.items.find((currency:any) => currency.isoCode === 'BRL'),
+        dollar: item.data.items.find((currency:any) => currency.isoCode === 'USD').purchasePrice,
+        real: item.data.items.find((currency:any) => currency.isoCode === 'BRL').purchasePrice,
     }));
-    const santaRita = await Promise.all(SANTA_RITA_CAMBIOS_OFFICES.map(async office => await axios.get(`http://admin.santaritacambios.com.py/rest/get-quotes?s=${office.branchId}`)));
-    const santaData = santaRita.map(item =>  ({ 
-        office: SANTA_RITA_CAMBIOS_OFFICES.find(office => office.branchId === item.data.branchOfficeId),
-        // branchOfficeId: item.data.branchOfficeId,
-        // dollar: item.data.items.find((currency:any) => currency.isoCode === 'USD'),
-        // real: item.data.items.find((currency:any) => currency.isoCode === 'BRL'),
+    const santaRita = await Promise.all(SANTA_RITA_CAMBIOS_OFFICES.map(async office => {
+        const item = await axios.get(`http://admin.santaritacambios.com.py/rest/get-quotes?s=${office.branchId}`);
+        return { 
+            company: "SANTA RITA CAMBIOS",
+            office,
+            branchOfficeId: 0,
+            dollar: parseInt(item.data.quotes['USDxPYG'].amount_buy),
+            real: parseInt(item.data.quotes['BRLxPYG'].amount_buy),
+        };
     }));
 
-    const response = {
-        
-    }
+    const response = [...chacoData, ...santaRita];
     res.status(200).send(response);
 }
 
