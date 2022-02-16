@@ -17,7 +17,7 @@ export const Layout = ({ title, children }: Props) => {
     <Box
       component="div"
       style={{
-        background: "#f5f5f5",
+        background: themeStyled.color.background,
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",

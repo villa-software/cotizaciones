@@ -41,7 +41,6 @@ export const Topbar = () => {
     <Box
       component="header"
       style={{
-        background: "#fff",
         padding: "1rem",
         display: "flex",
         alignItems: "center",
