@@ -51,7 +51,7 @@ export const Table = ({ data, columnsDefinition }: Props) => {
         Layout: ({ Table, Filter, Pagination }: any) => (
           <Box
             style={{
-              maxWidth: themeStyled.breakpoints.tablet,
+              width: "100%",
               margin: "auto",
             }}
           >
@@ -60,7 +60,7 @@ export const Table = ({ data, columnsDefinition }: Props) => {
                 marginBottom: "1rem",
               }}
             >
-              <Filter />
+              {/* <Filter /> */}
             </Box>
             <Table />
             <Box

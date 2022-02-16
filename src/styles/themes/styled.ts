@@ -1,9 +1,9 @@
 export const themeStyled = {
     breakpoints: {
-        desktop: '960px',
+        desktop: '1240px',
         tablet: '640px'
     },
     color: {
-        background: '#dae5ff',
+        background: '#F2F6FE',
     }
 }

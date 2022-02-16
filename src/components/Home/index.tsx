@@ -1,9 +1,11 @@
 import type { NextPage } from "next";
 import { useState } from "react";
 import { Box, TextField } from "@mui/material";
+
 import { Layout } from "../Layout";
 import { Select } from "../Select";
 import { Table } from "../Table";
+import { MultipleSelect } from "../MultipleSelect";
 
 import { themeStyled } from "../../styles/themes/styled";
 import { languagesHome } from "./languages";
@@ -19,6 +21,7 @@ const Home: NextPage<Props> = ({ language }) => {
     "USD"
   );
   const [currencyTo, setCurrencyTo] = useState<"USD" | "BRL" | "PYG">("USD");
+  const [value, setValue] = useState();
 
   const { welcomeTitle, inputCurrencyFrom, inputCurrencyTo } =
     languagesHome[language];
@@ -80,49 +83,93 @@ const Home: NextPage<Props> = ({ language }) => {
     <Layout title="Create Next App">
       <h1 style={{ textAlign: "center" }}>Onde seu dolár vale mais hoje?</h1>
       <h1 style={{ textAlign: "center" }}>Onde seu real vale mais hoje?</h1>
-      <br/>
+      <br />
       <h1 style={{ textAlign: "center" }}>{welcomeTitle}</h1>
       <Box
         style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr 2fr",
-          gap: "1rem",
-          maxWidth: themeStyled.breakpoints.tablet,
+          maxWidth: themeStyled.breakpoints.desktop,
           margin: "0 auto 2rem auto",
+          display: "grid",
+          gridTemplateColumns: "1fr 2fr",
+          gap: "1rem",
         }}
       >
-        <Select
-          label={inputCurrencyFrom}
-          currenciesData={currencies}
-          setCurrency={setCurrencyFrom}
-          currency={currencyFrom}
-        />
-        <Select
-          label={inputCurrencyTo}
-          currenciesData={currencies}
-          setCurrency={setCurrencyTo}
-          currency={currencyTo}
-        />
-        <TextField label="Valor" id="outlined-start-adornment" fullWidth />
-      </Box>
+        <div>
+          <Box
+            style={{
+              background: "#fff",
+              borderRadius: ".5rem",
+              padding: "1rem",
+              width: "100%",
+            }}
+          >
+            <h2>Conversor de moedas:</h2>
 
-      <Table
-        data={data}
-        columnsDefinition={[
-          {
-            id: "currencyExchange",
-            title: "Casa de câmbio",
-          },
-          {
-            id: "buy",
-            title: "Compra",
-          },
-          {
-            id: "sell",
-            title: "Venda",
-          },
-        ]}
-      />
+            <Box
+              style={{
+                margin: "2rem 0",
+              }}
+            >
+              <MultipleSelect />
+            </Box>
+
+            <Box
+              style={{
+                display: "grid",
+                gridTemplateColumns: "2fr 3fr 2fr",
+                gap: "1rem",
+              }}
+            >
+              <Select
+                label={inputCurrencyFrom}
+                currenciesData={currencies}
+                setCurrency={setCurrencyFrom}
+                currency={currencyFrom}
+              />
+              <TextField
+                label="Valor"
+                id="outlined-start-adornment"
+                fullWidth
+                placeholder="Digite o valor"
+                InputLabelProps={{ shrink: true }}
+              />
+              <Select
+                label={inputCurrencyTo}
+                currenciesData={currencies}
+                setCurrency={setCurrencyTo}
+                currency={currencyTo}
+              />
+            </Box>
+          </Box>
+        </div>
+
+        <Box
+          style={{
+            background: "#fff",
+            borderRadius: ".5rem",
+            padding: "1rem",
+            width: "100%",
+          }}
+        >
+          <Table
+            data={data}
+            columnsDefinition={[
+              {
+                id: "currencyExchange",
+                title: "Casa de câmbio",
+              },
+              {
+                id: "buy",
+                title: "Compra",
+              },
+              {
+                id: "sell",
+                title: "Venda",
+              },
+            ]}
+          />
+        </Box>
+      </Box>
     </Layout>
   );
 };
