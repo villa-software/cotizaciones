@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import axios from 'axios';
 import { companies } from 'src/utils/consts';
 
-export default async (
+const getOffices = async (
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) => {
@@ -21,3 +21,5 @@ export default async (
   }
   res.status(404);
 }
+
+export default getOffices;

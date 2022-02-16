@@ -78,6 +78,9 @@ const Home: NextPage<Props> = ({ language }) => {
 
   return (
     <Layout title="Create Next App">
+      <h1 style={{ textAlign: "center" }}>Onde seu dolár vale mais hoje?</h1>
+      <h1 style={{ textAlign: "center" }}>Onde seu real vale mais hoje?</h1>
+      <br/>
       <h1 style={{ textAlign: "center" }}>{welcomeTitle}</h1>
       <Box
         style={{
