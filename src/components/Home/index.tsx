@@ -1,21 +1,12 @@
+import { Box, TextField } from "@mui/material";
 import type { NextPage } from "next";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { Box, Grid, TextField } from "@mui/material";
-import Griddle, {
-  plugins,
-  RowDefinition,
-  ColumnDefinition,
-} from "griddle-react";
+import { useState } from "react";
+import { themeStyled } from "../../styles/themes/styled";
+import { Languages } from "../../types";
 import { Layout } from "../Layout";
 import { Select } from "../Select";
 import { Table } from "../Table";
-
-import { themeStyled } from "../../styles/themes/styled";
 import { languagesHome } from "./languages";
-
-import { Languages } from "../../types";
-import axios from "axios";
 
 interface Props {
   language: Languages;
