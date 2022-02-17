@@ -50,7 +50,7 @@ const Home: NextPage<Props> = (props) => {
       <Box
         style={{
           width: "100%",
-          height: "24vw",
+          height: "20vw",
           minHeight: "20rem",
           backgroundImage: "url(/images/background.png)",
           backgroundRepeat: "no-repeat",
