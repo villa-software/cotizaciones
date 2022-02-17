@@ -60,7 +60,7 @@ export const Table = ({ data, columnsDefinition }: Props) => {
                 marginBottom: "1rem",
               }}
             >
-              {/* <Filter /> */}
+              <Filter />
             </Box>
             <Table />
             <Box

@@ -1,6 +1,6 @@
 import { Box, TextField } from "@mui/material";
 import type { NextPage } from "next";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { Layout } from "../Layout";
 import { Select } from "../Select";
@@ -18,15 +18,23 @@ interface Props {
   data?: any;
 }
 
-const Home: NextPage<Props> = (props) => {
+interface Quota {
+  companyAndBranchOffice: string;
+  dollar: number;
+  real: number;
+}
+
+const Home: NextPage<Props> = ({ data, language }) => {
   const [currencyFrom, setCurrencyFrom] = useState<"USD" | "BRL" | "PYG">(
-    "USD"
+    "PYG"
   );
   const [currencyTo, setCurrencyTo] = useState<"USD" | "BRL" | "PYG">("USD");
-  const [value, setValue] = useState();
+  const [currencyValue, setCurrencyValue] = useState<string>("");
+
+  const [dataQuota, setDataQuota] = useState<Quota[]>([]);
 
   const { welcomeTitle, inputCurrencyFrom, inputCurrencyTo } =
-    languagesHome[props.language];
+    languagesHome[language as keyof typeof languagesHome];
 
   const { isNotebook } = useMediaQuery();
 
@@ -44,6 +52,26 @@ const Home: NextPage<Props> = (props) => {
       label: "PYG",
     },
   ];
+
+  function getData(PYGvalue?: number | undefined) {
+    if (data) {
+      const quota = data.map((quota: any) => {
+        return {
+          companyAndBranchOffice: `${quota.company} - ${quota.office.name}`,
+          dollar: PYGvalue
+            ? (PYGvalue / quota.dollar).toFixed(2)
+            : quota.dollar,
+          real: PYGvalue ? (PYGvalue / quota.real).toFixed(2) : quota.real,
+        };
+      });
+
+      setDataQuota(quota);
+    }
+  }
+
+  useEffect(() => {
+    getData(parseInt(currencyValue));
+  }, [data, currencyFrom, currencyTo, currencyValue]);
 
   return (
     <Layout title="Create Next App">
@@ -123,8 +151,11 @@ const Home: NextPage<Props> = (props) => {
                 label="Valor"
                 id="outlined-start-adornment"
                 fullWidth
+                value={currencyValue}
+                onChange={(e: any) => setCurrencyValue(e.target.value)}
                 placeholder="Digite o valor"
                 InputLabelProps={{ shrink: true }}
+                type="number"
               />
               <Select
                 label={inputCurrencyTo}
@@ -145,10 +176,10 @@ const Home: NextPage<Props> = (props) => {
           }}
         >
           <Table
-            data={props.data}
+            data={dataQuota}
             columnsDefinition={[
               {
-                id: "company",
+                id: "companyAndBranchOffice",
                 title: "Casa de câmbio",
               },
               {
