@@ -38,9 +38,9 @@ const names = [
 ];
 
 export const MultipleSelect = () => {
-  const [personName, setPersonName] = React.useState([]);
+  const [personName, setPersonName] = React.useState<Array<string>>([]);
 
-  const handleChange = (event) => {
+  const handleChange = (event: any) => {
     const {
       target: { value },
     } = event;
