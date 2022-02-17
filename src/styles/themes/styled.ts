@@ -4,6 +4,6 @@ export const themeStyled = {
         tablet: '640px'
     },
     color: {
-        background: '#F2F6FE',
+        background: '#efedf4',
     }
 }

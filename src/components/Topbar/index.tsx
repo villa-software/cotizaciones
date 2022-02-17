@@ -45,6 +45,9 @@ export const Topbar = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
+        position: "fixed",
+        zIndex: 3,
+        color: "#fff",
       }}
     >
       Header

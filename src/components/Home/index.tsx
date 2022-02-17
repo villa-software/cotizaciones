@@ -43,10 +43,15 @@ const Home: NextPage<Props> = (props) => {
 
   return (
     <Layout title="Create Next App">
-      <h1 style={{ textAlign: "center" }}>Onde seu dolár vale mais hoje?</h1>
-      <h1 style={{ textAlign: "center" }}>Onde seu real vale mais hoje?</h1>
-      <br />
-      <h1 style={{ textAlign: "center" }}>{welcomeTitle}</h1>
+      <h1
+        style={{
+          textAlign: "center",
+          color: "#fff",
+          fontSize: "calc(2rem + 1vw)",
+        }}
+      >
+        Onde seu dolár vale mais hoje?
+      </h1>
       <Box
         style={{
           maxWidth: themeStyled.breakpoints.desktop,
