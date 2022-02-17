@@ -11,6 +11,8 @@ import { themeStyled } from "../../styles/themes/styled";
 import { Languages } from "../../types";
 import { languagesHome } from "./languages";
 
+import { useMediaQuery } from "../../hooks/useMediaQuery";
+
 interface Props {
   language: Languages;
   data: any;
@@ -25,6 +27,8 @@ const Home: NextPage<Props> = (props) => {
 
   const { welcomeTitle, inputCurrencyFrom, inputCurrencyTo } =
     languagesHome[props.language];
+
+  const { isNotebook } = useMediaQuery();
 
   const currencies = [
     {
@@ -57,7 +61,7 @@ const Home: NextPage<Props> = (props) => {
         style={{
           maxWidth: themeStyled.breakpoints.desktop,
           margin: "0 auto 2rem auto",
-          display: "grid",
+          display: isNotebook ? "grid" : "block",
           gridTemplateColumns: "1fr 2fr",
           gap: "1rem",
         }}
@@ -68,6 +72,7 @@ const Home: NextPage<Props> = (props) => {
               background: "#fff",
               borderRadius: ".5rem",
               padding: "1rem",
+              marginBottom: isNotebook ? 0 : "1rem",
               width: "100%",
             }}
           >
@@ -84,7 +89,7 @@ const Home: NextPage<Props> = (props) => {
             <Box
               style={{
                 display: "grid",
-                gridTemplateColumns: "2fr 3fr 2fr",
+                gridTemplateColumns: "5rem 1fr 5rem",
                 gap: "1rem",
               }}
             >
