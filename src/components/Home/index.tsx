@@ -48,6 +48,7 @@ const Home: NextPage<Props> = (props) => {
           textAlign: "center",
           color: "#fff",
           fontSize: "calc(2rem + 1vw)",
+          marginBottom: "4rem",
         }}
       >
         Onde seu dolár vale mais hoje?
