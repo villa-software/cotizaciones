@@ -13,7 +13,7 @@ import { languagesHome } from "./languages";
 
 interface Props {
   language: Languages;
-  data: any;
+  data?: any;
 }
 
 const Home: NextPage<Props> = (props) => {

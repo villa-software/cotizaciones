@@ -12,8 +12,11 @@ export async function getServerSideProps() {
     }
   };
 }
+interface Props {
+  data: any;
+}
 
-const Home: NextPage = (props) => {
+const Home: NextPage<Props> = (props) => {
   return <HomePage language="es" data={props.data} />;
 };
 
