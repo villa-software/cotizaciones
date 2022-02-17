@@ -47,23 +47,43 @@ const Home: NextPage<Props> = (props) => {
 
   return (
     <Layout title="Create Next App">
-      <h1
+      <Box
         style={{
-          textAlign: "center",
-          color: "#fff",
-          fontSize: "calc(2rem + 1vw)",
-          marginBottom: "4rem",
+          width: "100%",
+          height: "24vw",
+          minHeight: "20rem",
+          backgroundImage: "url(/images/background.png)",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: "center 40%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "2rem",
+          marginBottom: "-3rem",
         }}
       >
-        Onde seu dolár vale mais hoje?
-      </h1>
+        <h1
+          style={{
+            textAlign: "center",
+            color: "#fff",
+            fontSize: "calc(1.5rem + 2vw)",
+          }}
+        >
+          Onde seu dolár vale mais hoje?
+        </h1>
+      </Box>
       <Box
         style={{
           maxWidth: themeStyled.breakpoints.desktop,
           margin: "0 auto 2rem auto",
           display: isNotebook ? "grid" : "block",
-          gridTemplateColumns: "1fr 2fr",
+          gridTemplateColumns: "24rem 5fr",
           gap: "1rem",
+          padding: "1rem",
+          width: "100%",
+          position: "relative",
+          zIndex: 2,
         }}
       >
         <div>
