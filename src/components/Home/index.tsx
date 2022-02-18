@@ -3,7 +3,6 @@ import type { NextPage } from "next";
 import { useState, useEffect } from "react";
 
 import { Layout } from "../Layout";
-import { Select } from "../Select";
 import { Table } from "../Table";
 import { MultipleSelect } from "../MultipleSelect";
 import { Input } from "../Input";
@@ -13,6 +12,9 @@ import { Languages } from "../../types";
 import { languagesHome } from "./languages";
 
 import { useMediaQuery } from "../../hooks/useMediaQuery";
+
+import { Select } from "antd";
+const { Option } = Select;
 
 interface Props {
   language: Languages;
@@ -26,7 +28,9 @@ interface Quota {
 }
 
 const Home: NextPage<Props> = ({ data, language }) => {
-  const [currencyFrom, setCurrencyFrom] = useState<"USD" | "BRL" | "PYG">("USD");
+  const [currencyFrom, setCurrencyFrom] = useState<"USD" | "BRL" | "PYG">(
+    "USD"
+  );
   const [currencyTo, setCurrencyTo] = useState<"USD" | "BRL" | "PYG">("PYG");
   const [currencyValue, setCurrencyValue] = useState<number>(1);
 
@@ -71,6 +75,13 @@ const Home: NextPage<Props> = ({ data, language }) => {
   useEffect(() => {
     getCurrentCurrencyValue(currencyValue);
   }, [data, currencyFrom, currencyTo, currencyValue]);
+
+  const children = [];
+  for (let i = 10; i < 36; i++) {
+    children.push(
+      <Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>
+    );
+  }
 
   return (
     <Layout title="Create Next App">
@@ -130,7 +141,17 @@ const Home: NextPage<Props> = ({ data, language }) => {
                 margin: "2rem 0",
               }}
             >
-              <MultipleSelect />
+              {/* <MultipleSelect /> */}
+              <Select
+                mode="multiple"
+                allowClear
+                style={{ width: "100%" }}
+                placeholder="Please select"
+                defaultValue={["a10", "c12"]}
+                //onChange={handleChange}
+              >
+                {children}
+              </Select>
             </Box>
 
             <Box
