@@ -7,7 +7,10 @@ import { successResponse } from 'src/utils/response.utils';
 ;
 
 const getCities = async () => {
-    return CITIES;
+    return {
+        defaultCity: CITIES.find(city => city.default),
+        cities: [...CITIES],
+    };
 }
    
     

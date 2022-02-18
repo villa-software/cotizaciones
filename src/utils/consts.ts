@@ -24,7 +24,7 @@ export const CITIES: City[] = [
     { id: 5, name: 'Ciudad del Este' },
     { id: 6, name: 'Hernandarias' },
     { id: 7, name: 'Encarnación' },
-    { id: 8, name: 'Santa Rita' },
+    { id: 8, name: 'Santa Rita', default: true },
     { id: 9, name: 'Pedro Juan Caballero' },
     { id: 10, name: 'Katuete' },
     { id: 11, name: 'Santa Rosa' },

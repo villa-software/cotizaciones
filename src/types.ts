@@ -9,6 +9,7 @@ export type Company = {
 export type City = {
     id: number;
     name: string;
+    default?: boolean;
 };
 
 export type Office = {

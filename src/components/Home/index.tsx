@@ -21,6 +21,7 @@ interface Props {
   language: Languages;
   data?: any;
   cities?: City[];
+  defaultCity: City;
 }
 
 interface Quota {
@@ -29,13 +30,13 @@ interface Quota {
   real: number;
 }
 
-const Home: NextPage<Props> = ({ data, language, cities }) => {
+const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
   const [currencyFrom, setCurrencyFrom] = useState<"USD" | "BRL" | "PYG">(
     "USD"
   );
   const [currencyTo, setCurrencyTo] = useState<"USD" | "BRL" | "PYG">("PYG");
   const [currencyValue, setCurrencyValue] = useState<number>(1);
-  const [selectedCities, setSelectedCities] = useState<City[]>([]);
+  const [selectedCities, setSelectedCities] = useState<City[]>([defaultCity]);
 
   const [dataQuota, setDataQuota] = useState<Quota[]>([]);
 
