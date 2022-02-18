@@ -153,6 +153,15 @@ const Home: NextPage<Props> = ({ data, language, cities }) => {
                   allowClear
                   style={{ width: "100%" }}
                   placeholder="Please select"
+                  onDeselect={(name: string) => {
+                    setSelectedCities((selectedCities) => {
+                      const updatedSelectedCities = selectedCities
+                        .filter((city) => city.name !== name)
+                        .map((city) => city);
+
+                      return updatedSelectedCities;
+                    });
+                  }}
                   value={selectedCities.map((city) => city.name)}
                   onSelect={(_: any, option: any) => {
                     const { children, key } = option;
