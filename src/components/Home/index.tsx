@@ -60,25 +60,25 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
     },
   ];
 
-  function getCurrentCurrencyValue(PYGvalue?: number | undefined) {
-    if (data) {
-      const quota = data.map((quota: any) => {
-        return {
-          companyAndBranchOffice: `${quota.company} - ${quota.office.name}`,
-          dollar: PYGvalue
-            ? (PYGvalue / quota.dollar).toFixed(2)
-            : quota.dollar,
-          real: PYGvalue ? (PYGvalue / quota.real).toFixed(2) : quota.real,
-        };
-      });
+  // function getCurrentCurrencyValue(PYGvalue?: number | undefined) {
+  //   if (data) {
+  //     const quota = data.map((quota: any) => {
+  //       return {
+  //         companyAndBranchOffice: `${quota.company} - ${quota.office.name}`,
+  //         dollar: PYGvalue
+  //           ? (PYGvalue / quota.dollar).toFixed(2)
+  //           : quota.dollar,
+  //         real: PYGvalue ? (PYGvalue / quota.real).toFixed(2) : quota.real,
+  //       };
+  //     });
 
-      setDataQuota(quota);
-    }
-  }
+  //     setDataQuota(quota);
+  //   }
+  // }
 
-  useEffect(() => {
-    getCurrentCurrencyValue(currencyValue);
-  }, [data, currencyFrom, currencyTo, currencyValue]);
+  // useEffect(() => {
+  //   getCurrentCurrencyValue(currencyValue);
+  // }, [data, currencyFrom, currencyTo, currencyValue]);
 
   const children = [];
   for (let i = 10; i < 36; i++) {
@@ -86,8 +86,6 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
       <Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>
     );
   }
-
-  console.log({ cities });
 
   return (
     <Layout title="Create Next App">
@@ -147,49 +145,48 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
                 margin: "2rem 0",
               }}
             >
-              {/* <MultipleSelect /> */}
               <InputGroup label="Selecione a cidade">
                 <Select
                   mode="multiple"
                   allowClear
                   style={{ width: "100%" }}
                   placeholder="Please select"
-                  onDeselect={(name: string) => {
-                    setSelectedCities((selectedCities) => {
-                      const updatedSelectedCities = selectedCities
-                        .filter((city) => city.name !== name)
-                        .map((city) => city);
+                  // onDeselect={(name: string) => {
+                  //   setSelectedCities((selectedCities) => {
+                  //     const updatedSelectedCities = selectedCities
+                  //       .filter((city) => city.name !== name)
+                  //       .map((city) => city);
 
-                      return updatedSelectedCities;
-                    });
-                  }}
+                  //     return updatedSelectedCities;
+                  //   });
+                  // }}
                   value={selectedCities.map((city) => city.name)}
-                  onSelect={(_: any, option: any) => {
-                    const { children, key } = option;
+                  // onSelect={(_: any, option: any) => {
+                  //   const { children, key } = option;
 
-                    const alreadyExists = selectedCities?.some(
-                      (city) => city.name === children
-                    );
+                  //   const alreadyExists = selectedCities?.some(
+                  //     (city) => city.name === children
+                  //   );
 
-                    if (alreadyExists) {
-                      setSelectedCities((selectedCities) => {
-                        const updatedSelectedCities = selectedCities
-                          .filter((city) => city.name !== children)
-                          .map((city) => city);
+                  //   if (alreadyExists) {
+                  //     setSelectedCities((selectedCities) => {
+                  //       const updatedSelectedCities = selectedCities
+                  //         .filter((city) => city.name !== children)
+                  //         .map((city) => city);
 
-                        return updatedSelectedCities;
-                      });
-                    } else {
-                      setSelectedCities((selectedCities) => {
-                        const updatedSelectedCities = [
-                          ...selectedCities,
-                          cities[key - 1],
-                        ];
+                  //       return updatedSelectedCities;
+                  //     });
+                  //   } else {
+                  //     setSelectedCities((selectedCities) => {
+                  //       const updatedSelectedCities = [
+                  //         ...selectedCities,
+                  //         cities[key - 1],
+                  //       ];
 
-                        return updatedSelectedCities;
-                      });
-                    }
-                  }}
+                  //       return updatedSelectedCities;
+                  //     });
+                  //   }
+                  // }}
                 >
                   {cities?.map((city: City) => (
                     <Option key={city.id} value={city.id}>
@@ -199,8 +196,6 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
                 </Select>
               </InputGroup>
             </Box>
-
-            {console.log({ selectedCities })}
 
             <Box
               style={{
