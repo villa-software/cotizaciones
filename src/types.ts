@@ -18,4 +18,25 @@ export type Office = {
     branchId: number;
 };
 
+export type QuoteCurrency = {
+    purchasePrice: number;
+    salePrice: number;
+}
+
+export type Quote = {
+    company: string;
+    office: Office;
+    branchOfficeId: string;
+    usd:QuoteCurrency;
+    brl:QuoteCurrency;
+    ars:QuoteCurrency;
+    eur:QuoteCurrency;
+}
+
+export type ApiResponse = {
+    success: boolean;
+    code: string;
+    data: Array<Quote>;
+}
+
 export type Languages = "pt" | "es"
