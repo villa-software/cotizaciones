@@ -20,6 +20,7 @@ import { InputGroup } from "../InputGroup";
 interface Props {
   language: Languages;
   data?: any;
+  cities?: any;
 }
 
 interface Quota {
@@ -28,7 +29,7 @@ interface Quota {
   real: number;
 }
 
-const Home: NextPage<Props> = ({ data, language }) => {
+const Home: NextPage<Props> = ({ data, language, cities }) => {
   const [currencyFrom, setCurrencyFrom] = useState<"USD" | "BRL" | "PYG">(
     "USD"
   );
@@ -84,7 +85,7 @@ const Home: NextPage<Props> = ({ data, language }) => {
     );
   }
 
-  console.log({ currencies });
+  console.log({ cities });
 
   return (
     <Layout title="Create Next App">
