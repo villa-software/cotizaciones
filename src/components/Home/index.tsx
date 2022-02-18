@@ -6,6 +6,7 @@ import { Layout } from "../Layout";
 import { Select } from "../Select";
 import { Table } from "../Table";
 import { MultipleSelect } from "../MultipleSelect";
+import { Input } from "../Input";
 
 import { themeStyled } from "../../styles/themes/styled";
 import { Languages } from "../../types";
@@ -147,14 +148,12 @@ const Home: NextPage<Props> = ({ data, language }) => {
                 setCurrency={setCurrencyFrom}
                 currency={currencyFrom}
               />
-              <TextField
+              <Input
                 label="Valor"
-                id="outlined-start-adornment"
                 fullWidth
                 value={currencyValue}
                 onChange={(e: any) => setCurrencyValue(e.target.value)}
                 placeholder="Digite o valor"
-                InputLabelProps={{ shrink: true }}
                 type="number"
               />
               <Select

@@ -1,5 +1,6 @@
-import { Dispatch, SetStateAction, ChangeEvent } from "react";
-import { TextField, MenuItem } from "@mui/material";
+import React, { Dispatch, SetStateAction, ChangeEvent, useState } from "react";
+
+import * as S from "./styles";
 
 type Currency = "USD" | "BRL" | "PYG";
 
@@ -16,29 +17,28 @@ export const Select = ({
   currenciesData,
   label,
 }: Props) => {
-  const handleChange = (
-    event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => {
-    setCurrency(event.target.value as Currency);
-  };
-  return (
-    <TextField
-      id="outlined-select-currency"
-      select
-      label={label}
-      value={currency}
-      onChange={handleChange}
-      style={{
-        width: "100%",
-      }}
+  const [isExpanded, setIsExpanded] = useState(false);
 
-      //helperText="Please select your currency"
-    >
-      {currenciesData.map((option: any) => (
-        <MenuItem key={option.value} value={option.value}>
-          <>{option.label}</>
-        </MenuItem>
-      ))}
-    </TextField>
+  return (
+    <div>
+      <label>{label}</label>
+      <S.Select onClick={() => setIsExpanded(!isExpanded)}>
+        <S.Display isExpanded={isExpanded}>{currency}</S.Display>
+        <S.ListOptions isExpanded={isExpanded} optionsLenght={currenciesData}>
+          {currenciesData.map((option: any) => (
+            <S.Option
+              key={option.value}
+              onClick={() => setCurrency(option.value)}
+            >
+              {option.label}
+            </S.Option>
+          ))}
+        </S.ListOptions>
+        <S.Backdrop
+          isExpanded={isExpanded}
+          onClick={() => setIsExpanded(false)}
+        />
+      </S.Select>
+    </div>
   );
 };

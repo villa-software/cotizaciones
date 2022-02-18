@@ -51,27 +51,31 @@ export const MultipleSelect = () => {
   };
 
   return (
-    <FormControl sx={{ width: "100%" }}>
-      <InputLabel id="demo-multiple-checkbox-label">
-        Escolha a cidade
-      </InputLabel>
-      <Select
-        labelId="demo-multiple-checkbox-label"
-        id="demo-multiple-checkbox"
-        multiple
-        value={personName}
-        onChange={handleChange}
-        input={<OutlinedInput label="Escolha a cidade" />}
-        renderValue={(selected) => selected.join(", ")}
-        MenuProps={MenuProps}
-      >
-        {names.map((name) => (
-          <MenuItem key={name} value={name}>
-            <Checkbox checked={personName.indexOf(name) > -1} />
-            <ListItemText primary={name} />
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
+    <div>
+      <label>Escolha a cidade</label>
+      <FormControl sx={{ width: "100%" }}>
+        {/* 
+        <InputLabel id="demo-multiple-checkbox-label">
+          Escolha a cidade
+        </InputLabel> */}
+        <Select
+          labelId="demo-multiple-checkbox-label"
+          id="demo-multiple-checkbox"
+          multiple
+          value={personName}
+          onChange={handleChange}
+          input={<OutlinedInput />}
+          renderValue={(selected) => selected.join(", ")}
+          MenuProps={MenuProps}
+        >
+          {names.map((name) => (
+            <MenuItem key={name} value={name}>
+              <Checkbox checked={personName.indexOf(name) > -1} />
+              <ListItemText primary={name} />
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </div>
   );
 };

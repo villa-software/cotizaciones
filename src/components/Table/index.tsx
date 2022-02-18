@@ -26,6 +26,9 @@ export const Table = ({ data, columnsDefinition }: Props) => {
     <Griddle
       data={data}
       plugins={[plugins.LocalPlugin]}
+      pageProperties={{
+        pageSize: 20,
+      }}
       styleConfig={{
         styles: {
           Table: {
@@ -44,9 +47,7 @@ export const Table = ({ data, columnsDefinition }: Props) => {
           },
         },
       }}
-      textProperties={{
-        filterPlaceholder: "Buscar por matriz",
-      }}
+      /* sortProperties={[{ id: "real", sortAscending: true }]} */
       components={{
         Layout: ({ Table, Filter, Pagination }: any) => (
           <Box
@@ -59,9 +60,7 @@ export const Table = ({ data, columnsDefinition }: Props) => {
               style={{
                 marginBottom: "1rem",
               }}
-            >
-              <Filter />
-            </Box>
+            ></Box>
             <Table />
             <Box
               style={{
@@ -69,7 +68,7 @@ export const Table = ({ data, columnsDefinition }: Props) => {
                 textAlign: "right",
               }}
             >
-              <Pagination />
+              {/* <Pagination /> */}
             </Box>
           </Box>
         ),
