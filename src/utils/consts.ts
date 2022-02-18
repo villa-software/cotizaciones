@@ -35,10 +35,10 @@ export const SANTA_RITA_CAMBIOS_OFFICES: Office[] = [
     { id: 4, branchId: 5, name: 'Santa Rita', city: 1 },
 ];
 export const CHACO_OFFICES: Office[] = [
-    { id: 1, branchId: 1, name: 'Casa Central - Asuncion', city: 1 },
-    { id: 2, branchId: 2, name: 'Shopping Villa Morra - Asuncion', city: 1 },
-    { id: 3, branchId: 3, name: 'Shopping Multiplaza - Asuncion', city: 1 },
-    { id: 4, branchId: 30, name: 'Palma', city: 1 },
+    { id: 5, branchId: 1, name: 'Casa Central - Asuncion', city: 1 },
+    { id: 6, branchId: 2, name: 'Shopping Villa Morra - Asuncion', city: 1 },
+    { id: 7, branchId: 3, name: 'Shopping Multiplaza - Asuncion', city: 1 },
+    { id: 8, branchId: 30, name: 'Palma', city: 1 },
     // { id: 5, branchId: , name: 'Agencia San Lorenzo', city: 2 },
     // { id: 6, branchId: , name: 'Aeropuerto Intl Silvio Pettirossi', city: 3 },
     // { id: 7, branchId: , name: 'Ag. Plaza Madero', city: 3 },
