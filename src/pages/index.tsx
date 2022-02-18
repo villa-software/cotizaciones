@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { ApiResponse } from "src/types";
+import { ApiResponse, Quote } from "src/types";
 import HomePage from "../components/Home";
 
 export async function getServerSideProps() {
@@ -12,16 +12,16 @@ export async function getServerSideProps() {
 
   return {
     props: {
-      data: data.data,
+      data: [...data.data],
     },
   };
 }
 interface Props {
-  data: any;
+  data: Quote[];
 }
 
 const Home: NextPage<Props> = (props) => {
-  console.log({ data: props.data });
+  console.log(props.data);
   return <HomePage language="es" data={props.data} />;
 };
 

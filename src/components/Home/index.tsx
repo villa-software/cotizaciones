@@ -3,7 +3,7 @@ import type { NextPage } from "next";
 import { useState, useEffect } from "react";
 
 import { Layout } from "../Layout";
-import { Table } from "../Table";
+import { MyTable } from "../Table";
 import { MultipleSelect } from "../MultipleSelect";
 import { Input } from "../Input";
 
@@ -193,22 +193,8 @@ const Home: NextPage<Props> = ({ data, language }) => {
             width: "100%",
           }}
         >
-          <Table
-            data={dataQuota}
-            columnsDefinition={[
-              {
-                id: "companyAndBranchOffice",
-                title: "Casa de câmbio",
-              },
-              {
-                id: "purchasePrice",
-                title: "Compra",
-              },
-              {
-                id: "salePRice",
-                title: "Venda",
-              },
-            ]}
+          <MyTable
+            data={data}
           />
         </Box>
       </Box>
