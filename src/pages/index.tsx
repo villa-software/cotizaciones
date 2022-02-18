@@ -1,15 +1,15 @@
 import type { NextPage } from "next";
-import { ApiResponse, Quote } from "src/types";
+import { ApiResponse, Quote, City } from "src/types";
 import HomePage from "../components/Home";
 
 export async function getServerSideProps() {
-  const jsonData = await fetch(
+  /* const jsonData = await fetch(
     process.env.NODE_ENV === "production"
       ? "https://cotizacionespy.vercel.app/api/quotes"
       : "http://localhost:3000/api/quotes"
   );
 
-  const data: ApiResponse = await jsonData.json();
+  const data: ApiResponse = await jsonData.json(); */
 
   const jsonCities = await fetch(
     process.env.NODE_ENV === "production"
@@ -23,14 +23,15 @@ export async function getServerSideProps() {
 
   return {
     props: {
-      data: [...data.data],
-      cities: [],
+      //data: [...data.data],
+      data: [],
+      cities: cities.data,
     },
   };
 }
 interface Props {
   data: Quote[];
-  cities: any;
+  cities: City[];
 }
 
 const Home: NextPage<Props> = (props) => {

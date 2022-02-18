@@ -6,7 +6,7 @@ import { Layout } from "../Layout";
 import { MyTable } from "../Table";
 
 import { themeStyled } from "../../styles/themes/styled";
-import { Languages } from "../../types";
+import { Languages, City } from "../../types";
 import { languagesHome } from "./languages";
 
 import { useMediaQuery } from "../../hooks/useMediaQuery";
@@ -20,7 +20,7 @@ import { InputGroup } from "../InputGroup";
 interface Props {
   language: Languages;
   data?: any;
-  cities?: any;
+  cities?: City[];
 }
 
 interface Quota {
@@ -35,6 +35,7 @@ const Home: NextPage<Props> = ({ data, language, cities }) => {
   );
   const [currencyTo, setCurrencyTo] = useState<"USD" | "BRL" | "PYG">("PYG");
   const [currencyValue, setCurrencyValue] = useState<number>(1);
+  const [selectedCities, setSelectedCities] = useState<City[]>([]);
 
   const [dataQuota, setDataQuota] = useState<Quota[]>([]);
 
@@ -152,13 +153,44 @@ const Home: NextPage<Props> = ({ data, language, cities }) => {
                   allowClear
                   style={{ width: "100%" }}
                   placeholder="Please select"
-                  defaultValue={["a10", "c12"]}
-                  //onChange={handleChange}
+                  value={selectedCities.map((city) => city.name)}
+                  onSelect={(_: any, option: any) => {
+                    const { children, key } = option;
+
+                    const alreadyExists = selectedCities?.some(
+                      (city) => city.name === children
+                    );
+
+                    if (alreadyExists) {
+                      setSelectedCities((selectedCities) => {
+                        const updatedSelectedCities = selectedCities
+                          .filter((city) => city.name !== children)
+                          .map((city) => city);
+
+                        return updatedSelectedCities;
+                      });
+                    } else {
+                      setSelectedCities((selectedCities) => {
+                        const updatedSelectedCities = [
+                          ...selectedCities,
+                          cities[key - 1],
+                        ];
+
+                        return updatedSelectedCities;
+                      });
+                    }
+                  }}
                 >
-                  {children}
+                  {cities?.map((city: City) => (
+                    <Option key={city.id} value={city.id}>
+                      {city.name}
+                    </Option>
+                  ))}
                 </Select>
               </InputGroup>
             </Box>
+
+            {console.log({ selectedCities })}
 
             <Box
               style={{
