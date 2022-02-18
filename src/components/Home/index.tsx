@@ -26,11 +26,9 @@ interface Quota {
 }
 
 const Home: NextPage<Props> = ({ data, language }) => {
-  const [currencyFrom, setCurrencyFrom] = useState<"USD" | "BRL" | "PYG">(
-    "PYG"
-  );
-  const [currencyTo, setCurrencyTo] = useState<"USD" | "BRL" | "PYG">("USD");
-  const [currencyValue, setCurrencyValue] = useState<string>("");
+  const [currencyFrom, setCurrencyFrom] = useState<"USD" | "BRL" | "PYG">("USD");
+  const [currencyTo, setCurrencyTo] = useState<"USD" | "BRL" | "PYG">("PYG");
+  const [currencyValue, setCurrencyValue] = useState<number>(1);
 
   const [dataQuota, setDataQuota] = useState<Quota[]>([]);
 
@@ -54,7 +52,7 @@ const Home: NextPage<Props> = ({ data, language }) => {
     },
   ];
 
-  function getData(PYGvalue?: number | undefined) {
+  function getCurrentCurrencyValue(PYGvalue?: number | undefined) {
     if (data) {
       const quota = data.map((quota: any) => {
         return {
@@ -71,7 +69,7 @@ const Home: NextPage<Props> = ({ data, language }) => {
   }
 
   useEffect(() => {
-    getData(parseInt(currencyValue));
+    getCurrentCurrencyValue(currencyValue);
   }, [data, currencyFrom, currencyTo, currencyValue]);
 
   return (
@@ -138,7 +136,7 @@ const Home: NextPage<Props> = ({ data, language }) => {
             <Box
               style={{
                 display: "grid",
-                gridTemplateColumns: "5rem 1fr 5rem",
+                gridTemplateColumns: "6rem 2fr 6rem",
                 gap: "1rem",
               }}
             >
@@ -182,12 +180,12 @@ const Home: NextPage<Props> = ({ data, language }) => {
                 title: "Casa de câmbio",
               },
               {
-                id: "dollar",
-                title: "USD",
+                id: "purchasePrice",
+                title: "Compra",
               },
               {
-                id: "real",
-                title: "BRL",
+                id: "salePRice",
+                title: "Venda",
               },
             ]}
           />

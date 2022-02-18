@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import { ApiResponse } from "src/types";
 import HomePage from "../components/Home";
 
 export async function getServerSideProps() {
@@ -7,11 +8,11 @@ export async function getServerSideProps() {
       ? "https://cotizacionespy.vercel.app/api/quotes"
       : "http://localhost:3000/api/quotes"
   );
-  const data = await jsonData.json();
+  const data: ApiResponse = await jsonData.json();
 
   return {
     props: {
-      data,
+      data: data.data,
     },
   };
 }
