@@ -1,6 +1,11 @@
 import { useState, ChangeEvent, useEffect } from "react";
 import { Box, TextField, MenuItem } from "@mui/material";
 import { useRouter } from "next/router";
+import Image from "next/image";
+
+import { themeStyled } from "../../styles/themes/styled";
+
+//import Logo from "/logos/ideia-logo-02.svg";
 
 import { Languages } from "../../types";
 
@@ -46,11 +51,17 @@ export const Topbar = () => {
         alignItems: "center",
         justifyContent: "space-between",
         position: "fixed",
-        zIndex: 3,
-        color: "#fff",
+        zIndex: 2,
+        width: "100%",
       }}
     >
-      Header
+      <Image
+        src="/logos/ideia-logo-03.svg"
+        width="250px"
+        height="50px"
+        objectFit="contain"
+        alt="cotizacionespy"
+      />
       <TextField
         id="outlined-select-currency"
         select
