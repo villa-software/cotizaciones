@@ -6,7 +6,7 @@ import { Layout } from "../Layout";
 import { MyTable } from "../Table";
 
 import { themeStyled } from "../../styles/themes/styled";
-import { Languages, City } from "../../types";
+import { Languages, City, ApiResponse, Quote } from "../../types";
 import { languagesHome } from "./languages";
 
 import { useMediaQuery } from "../../hooks/useMediaQuery";
@@ -16,18 +16,13 @@ import { Select } from "antd";
 const { Option } = Select;
 
 import { InputGroup } from "../InputGroup";
+import axios from "axios";
 
 interface Props {
   language: Languages;
   data?: any;
   cities?: City[];
   defaultCity: City;
-}
-
-interface Quota {
-  companyAndBranchOffice: string;
-  dollar: number;
-  real: number;
 }
 
 const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
@@ -38,7 +33,7 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
   const [currencyValue, setCurrencyValue] = useState<number>(1);
   const [selectedCities, setSelectedCities] = useState<City[]>([defaultCity]);
 
-  const [dataQuota, setDataQuota] = useState<Quota[]>([]);
+  const [dataQuota, setDataQuota] = useState<Quote[]>(data);
 
   const { welcomeTitle, inputCurrencyFrom, inputCurrencyTo } =
     languagesHome[language as keyof typeof languagesHome];
@@ -85,6 +80,26 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
     children.push(
       <Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>
     );
+  }
+
+  useEffect(() => {
+      const getQuotes = async () => {
+        const selectedCitiesUrl = selectedCities.map(city => city.id).join('/');
+        const jsonData = await fetch(
+          process.env.NODE_ENV === "production"
+            ? `https://cotizacionespy.vercel.app/api/quotes/${selectedCitiesUrl}`
+            : `http://localhost:3000/api/quotes/${selectedCitiesUrl}`
+        );
+      
+        const data: ApiResponse = await jsonData.json();
+        setDataQuota(data.data);
+      }
+      getQuotes();
+  }, [selectedCities]);
+
+  function handleChange(values: Array<number>) {
+    const selected = cities?.filter(city => values.includes(city.id));
+    setSelectedCities(selected || []);
   }
 
   return (
@@ -151,42 +166,8 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
                   allowClear
                   style={{ width: "100%" }}
                   placeholder="Please select"
-                  // onDeselect={(name: string) => {
-                  //   setSelectedCities((selectedCities) => {
-                  //     const updatedSelectedCities = selectedCities
-                  //       .filter((city) => city.name !== name)
-                  //       .map((city) => city);
-
-                  //     return updatedSelectedCities;
-                  //   });
-                  // }}
-                  value={selectedCities.map((city) => city.name)}
-                  // onSelect={(_: any, option: any) => {
-                  //   const { children, key } = option;
-
-                  //   const alreadyExists = selectedCities?.some(
-                  //     (city) => city.name === children
-                  //   );
-
-                  //   if (alreadyExists) {
-                  //     setSelectedCities((selectedCities) => {
-                  //       const updatedSelectedCities = selectedCities
-                  //         .filter((city) => city.name !== children)
-                  //         .map((city) => city);
-
-                  //       return updatedSelectedCities;
-                  //     });
-                  //   } else {
-                  //     setSelectedCities((selectedCities) => {
-                  //       const updatedSelectedCities = [
-                  //         ...selectedCities,
-                  //         cities[key - 1],
-                  //       ];
-
-                  //       return updatedSelectedCities;
-                  //     });
-                  //   }
-                  // }}
+                  onChange={handleChange}
+                  value={selectedCities.map((city) => city.id)}
                 >
                   {cities?.map((city: City) => (
                     <Option key={city.id} value={city.id}>
@@ -252,7 +233,7 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
             width: "100%",
           }}
         >
-          <MyTable data={data} />
+          <MyTable data={dataQuota} />
         </Box>
       </Box>
     </Layout>
