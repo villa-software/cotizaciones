@@ -1,12 +1,11 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { useRouter } from 'next/router';
 import axios from 'axios';
-import { CHACO_OFFICES, CITIES, SANTA_RITA_CAMBIOS_OFFICES } from 'src/utils/consts';
+import { curry } from 'lodash/fp';
+import type { NextApiRequest, NextApiResponse } from 'next';
 //@ts-ignore
 import asyncPipe from 'pipeawait';
-import { curry, map, filter } from 'lodash/fp';
-import { successResponse } from 'src/utils/response.utils';
 import { Office } from 'src/types';
+import { CHACO_OFFICES, CITIES, SANTA_RITA_CAMBIOS_OFFICES } from 'src/utils/consts';
+import { successResponse } from 'src/utils/response.utils';
 ;
 const getChaco = async () => await Promise.all(CHACO_OFFICES.map(async office => axios.get(`https://www.cambioschaco.com.py/api/branch_office/${office.branchId}/exchange`)));
 const mapChaco = (item: any) => { 
@@ -90,10 +89,19 @@ const getSantaRita = async (currentValues: Array<any>) => {
     return [...currentValues, ...santaRitaData];
 }
    
-const getDefaultCityOffices = async () => {
-    const defaultCity = CITIES.find(city => city.default);
-    const chacoOffices = CHACO_OFFICES.filter(office => office.city === defaultCity?.id);
-    const santaRitaOffices = SANTA_RITA_CAMBIOS_OFFICES.filter(office => office.city === defaultCity?.id);
+const getCityOffices = async (req: NextApiRequest) => {
+    const { ids } = req.query;
+    const cities = CITIES
+    .filter(city => {
+        if(Array.isArray(ids)) {
+            const idsNumber = ids.map(id => parseInt(id));
+            return idsNumber.includes(city.id);
+        }
+        return parseInt(ids) === city.id;
+    })
+    .map(city => city.id);
+    const chacoOffices = CHACO_OFFICES.filter(office => cities.includes(office.city));
+    const santaRitaOffices = SANTA_RITA_CAMBIOS_OFFICES.filter(office => cities.includes(office.city));
 
     const chacoData = await Promise.all(chacoOffices.map(async office => axios.get(`https://www.cambioschaco.com.py/api/branch_office/${office.branchId}/exchange`)));
     const sanaRitaData = [];
@@ -112,7 +120,7 @@ const quotes = async (
   res: NextApiResponse<any>
 ) => {
     const data = await asyncPipe(
-        getDefaultCityOffices,
+        getCityOffices,
         curry(successResponse)(req)
     )(req);
     res.status(200).send(data);
