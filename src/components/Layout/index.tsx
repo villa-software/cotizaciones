@@ -20,6 +20,9 @@ export const Layout = ({ title, children }: Props) => {
         background: themeStyled.color.background,
         minHeight: "100vh",
         position: "relative",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
       }}
     >
       <Head>
