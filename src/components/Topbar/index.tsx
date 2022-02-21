@@ -4,12 +4,17 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 
 import { themeStyled } from "../../styles/themes/styled";
+import { useMediaQuery } from "../../hooks/useMediaQuery";
 
 //import Logo from "/logos/ideia-logo-02.svg";
 
 import { Languages } from "../../types";
 
-export const Topbar = () => {
+interface Props {
+  hasScrolled: boolean;
+}
+
+export const Topbar = ({ hasScrolled }: Props) => {
   const [currentLanguage, setCurrentLanguage] = useState<Languages>("es");
   const { route, push: redirectTo } = useRouter();
 
@@ -29,6 +34,8 @@ export const Topbar = () => {
   ) => {
     redirectTo(`/${event.target.value}`);
   };
+
+  const { isNotebook } = useMediaQuery();
 
   useEffect(() => {
     if (route) {
@@ -51,18 +58,23 @@ export const Topbar = () => {
         alignItems: "center",
         justifyContent: "space-between",
         position: "fixed",
-        zIndex: 2,
+        zIndex: 3,
         width: "100%",
+        background: hasScrolled ? "#fff" : "transparent",
+        transition: "all .3s",
+        boxShadow: "0px 7px 8px -1px rgba(0,0,0,0.15)",
       }}
     >
       <Image
-        src="/logos/ideia-logo-03.svg"
-        width="250px"
-        height="50px"
+        src={
+          hasScrolled ? "/logos/ideia-logo-02.svg" : "/logos/ideia-logo-03.svg"
+        }
+        width={isNotebook ? "250px" : "200px"}
+        height={isNotebook ? "50px" : "40px"}
         objectFit="contain"
         alt="cotizacionespy"
       />
-      <TextField
+      {/* <TextField
         id="outlined-select-currency"
         select
         value={currentLanguage}
@@ -76,7 +88,7 @@ export const Topbar = () => {
             {option.label}
           </MenuItem>
         ))}
-      </TextField>
+      </TextField> */}
     </Box>
   );
 };

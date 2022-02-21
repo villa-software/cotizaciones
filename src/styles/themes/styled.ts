@@ -6,5 +6,6 @@ export const themeStyled = {
     },
     color: {
         background: '#efedf4',
+        backgroundDark: "#12001C"
     }
 }

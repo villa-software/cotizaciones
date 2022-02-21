@@ -83,22 +83,22 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
   }
 
   useEffect(() => {
-      const getQuotes = async () => {
-        const selectedCitiesUrl = selectedCities.map(city => city.id).join('/');
-        const jsonData = await fetch(
-          process.env.NODE_ENV === "production"
-            ? `https://cotizacionespy.vercel.app/api/quotes/${selectedCitiesUrl}`
-            : `http://localhost:3000/api/quotes/${selectedCitiesUrl}`
-        );
-      
-        const data: ApiResponse = await jsonData.json();
-        setDataQuota(data.data);
-      }
-      getQuotes();
+    const getQuotes = async () => {
+      const selectedCitiesUrl = selectedCities.map((city) => city.id).join("/");
+      const jsonData = await fetch(
+        process.env.NODE_ENV === "production"
+          ? `https://cotizacionespy.vercel.app/api/quotes/${selectedCitiesUrl}`
+          : `http://localhost:3000/api/quotes/${selectedCitiesUrl}`
+      );
+
+      const data: ApiResponse = await jsonData.json();
+      setDataQuota(data.data);
+    };
+    getQuotes();
   }, [selectedCities]);
 
   function handleChange(values: Array<number>) {
-    const selected = cities?.filter(city => values.includes(city.id));
+    const selected = cities?.filter((city) => values.includes(city.id));
     setSelectedCities(selected || []);
   }
 
@@ -125,6 +125,7 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
             textAlign: "center",
             color: "#fff",
             fontSize: "calc(1.5rem + 2vw)",
+            paddingTop: "2rem",
           }}
         >
           Onde seu dolár vale mais hoje?
