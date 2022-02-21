@@ -62,7 +62,7 @@ export const Topbar = ({ hasScrolled }: Props) => {
         width: "100%",
         background: hasScrolled ? "#fff" : "transparent",
         transition: "all .3s",
-        boxShadow: "0px 7px 8px -1px rgba(0,0,0,0.15)",
+        boxShadow: "0px 6px 6px 0px rgba(0,0,0,0.15)",
       }}
     >
       <Image
