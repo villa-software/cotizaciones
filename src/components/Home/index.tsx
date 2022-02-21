@@ -87,6 +87,11 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
     );
   }
 
+  function handleChange(values: Array<number>) {
+    const selected = cities?.filter(city => values.includes(city.id));
+    setSelectedCities(selected || []);
+  }
+
   return (
     <Layout title="Create Next App">
       <Box
@@ -151,42 +156,8 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
                   allowClear
                   style={{ width: "100%" }}
                   placeholder="Please select"
-                  // onDeselect={(name: string) => {
-                  //   setSelectedCities((selectedCities) => {
-                  //     const updatedSelectedCities = selectedCities
-                  //       .filter((city) => city.name !== name)
-                  //       .map((city) => city);
-
-                  //     return updatedSelectedCities;
-                  //   });
-                  // }}
-                  value={selectedCities.map((city) => city.name)}
-                  // onSelect={(_: any, option: any) => {
-                  //   const { children, key } = option;
-
-                  //   const alreadyExists = selectedCities?.some(
-                  //     (city) => city.name === children
-                  //   );
-
-                  //   if (alreadyExists) {
-                  //     setSelectedCities((selectedCities) => {
-                  //       const updatedSelectedCities = selectedCities
-                  //         .filter((city) => city.name !== children)
-                  //         .map((city) => city);
-
-                  //       return updatedSelectedCities;
-                  //     });
-                  //   } else {
-                  //     setSelectedCities((selectedCities) => {
-                  //       const updatedSelectedCities = [
-                  //         ...selectedCities,
-                  //         cities[key - 1],
-                  //       ];
-
-                  //       return updatedSelectedCities;
-                  //     });
-                  //   }
-                  // }}
+                  onChange={handleChange}
+                  value={selectedCities.map((city) => city.id)}
                 >
                   {cities?.map((city: City) => (
                     <Option key={city.id} value={city.id}>
