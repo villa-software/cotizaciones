@@ -2,8 +2,9 @@ import { Box } from "@mui/material";
 import type { NextPage } from "next";
 import { useState, useEffect } from "react";
 
-import { Layout } from "../Layout";
+import { Loader } from "../Loader";
 import { MyTable } from "../Table";
+import { Layout } from "../Layout";
 
 import { themeStyled } from "../../styles/themes/styled";
 import { Languages, City, ApiResponse, Quote } from "../../types";
@@ -34,9 +35,7 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
   const [selectedCities, setSelectedCities] = useState<City[]>([defaultCity]);
 
   const [dataQuota, setDataQuota] = useState<Quote[]>(data);
-
-  const { welcomeTitle, inputCurrencyFrom, inputCurrencyTo } =
-    languagesHome[language as keyof typeof languagesHome];
+  const [isLoading, setIsLoading] = useState(false);
 
   const { isNotebook } = useMediaQuery();
 
@@ -84,6 +83,7 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
 
   useEffect(() => {
     const getQuotes = async () => {
+      setIsLoading(true);
       const selectedCitiesUrl = selectedCities.map((city) => city.id).join("/");
       const jsonData = await fetch(
         process.env.NODE_ENV === "production"
@@ -91,16 +91,18 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
           : `http://localhost:3000/api/quotes/${selectedCitiesUrl}`
       );
 
-      const data: ApiResponse = await jsonData.json();
-      setDataQuota(data.data);
+      const { data }: ApiResponse = await jsonData.json();
+      setDataQuota(data);
     };
-    getQuotes();
+    getQuotes().finally(() => setIsLoading(false));
   }, [selectedCities]);
 
   function handleChange(values: Array<number>) {
     const selected = cities?.filter((city) => values.includes(city.id));
     setSelectedCities(selected || []);
   }
+
+  console.log({ dataQuota });
 
   return (
     <Layout title="Create Next App">
@@ -234,6 +236,7 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
             width: "100%",
           }}
         >
+          <Loader loading={isLoading} />
           <MyTable data={dataQuota} />
         </Box>
       </Box>
