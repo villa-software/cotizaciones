@@ -153,7 +153,7 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
             paddingTop: "2rem",
           }}
         >
-          Onde seu dolár vale mais hoje?
+          ¿Dónde vale más su dólar/real hoy?
         </h1>
       </Box>
       <Box
@@ -196,6 +196,7 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
                   onSelect={onSelect}
                   onDeselect={onDeselect}
                   value={currentCities.map((city) => city.id)}
+                  size="large"
                 >
                   {cities?.map((city: City) => (
                     <Option key={city.id} value={city.id}>
@@ -218,6 +219,7 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
                   value={currencyFrom}
                   style={{ width: "100%" }}
                   onChange={setCurrencyFrom}
+                  size="large"
                 >
                   {currencies.map((currency) => (
                     <Option key={currency.value} value={currency.value}>
@@ -233,6 +235,7 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
                   onChange={(e: any) => setCurrencyValue(e.target.value)}
                   placeholder="Digite o valor"
                   type="number"
+                  size="large"
                 />
               </InputGroup>
 
@@ -241,6 +244,7 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
                   value={currencyTo}
                   style={{ width: "100%" }}
                   onChange={setCurrencyTo}
+                  size="large"
                 >
                   {currencies.map((currency) => (
                     <Option key={currency.value} value={currency.value}>

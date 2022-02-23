@@ -29,5 +29,5 @@ const columns = [
 ];
 
 export const MyTable = ({ data }: Props) => {
-  return <Table dataSource={data} columns={columns} />;
+  return <Table dataSource={data} columns={columns} rowKey={record => `[${record?.city?.name}] ${record?.company} - ${record?.office?.name}`} />;
 };
