@@ -27,6 +27,7 @@ export type QuoteCurrency = {
 export type Quote = {
     company: string;
     office: Office;
+    city: City;
     branchOfficeId: string;
     usd:QuoteCurrency;
     brl:QuoteCurrency;

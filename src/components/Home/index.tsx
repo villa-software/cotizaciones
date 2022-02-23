@@ -32,7 +32,9 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
   );
   const [currencyTo, setCurrencyTo] = useState<"USD" | "BRL" | "PYG">("PYG");
   const [currencyValue, setCurrencyValue] = useState<number>(1);
-  const [selectedCities, setSelectedCities] = useState<City[]>([defaultCity]);
+  const [currentCities, setCurrentCities] = useState<City[]>([defaultCity]);
+  const [selectedCity, setSelectedCity] = useState<number>();
+  // const [onSelectedCities, setOnSelectedCities] = useState<number[]>();
 
   const [dataQuota, setDataQuota] = useState<Quote[]>(data);
   const [isLoading, setIsLoading] = useState(false);
@@ -84,25 +86,46 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
   useEffect(() => {
     const getQuotes = async () => {
       setIsLoading(true);
-      const selectedCitiesUrl = selectedCities.map((city) => city.id).join("/");
       const jsonData = await fetch(
         process.env.NODE_ENV === "production"
-          ? `https://cotizacionespy.vercel.app/api/quotes/${selectedCitiesUrl}`
-          : `http://localhost:3000/api/quotes/${selectedCitiesUrl}`
+          ? `https://cotizacionespy.vercel.app/api/quotes/${selectedCity}`
+          : `http://localhost:3000/api/quotes/${selectedCity}`
       );
+      // const selectedCitiesUrl = currentCities.map((city) => city.id).join("/");
+      // const jsonData = await fetch(
+      //   process.env.NODE_ENV === "production"
+      //     ? `https://cotizacionespy.vercel.app/api/quotes/${selectedCitiesUrl}`
+      //     : `http://localhost:3000/api/quotes/${selectedCitiesUrl}`
+      // );
 
       const { data }: ApiResponse = await jsonData.json();
-      setDataQuota(data);
+      if(data && data.length){
+        setDataQuota((oldData) => {
+          return [
+            ...oldData,
+            ...data
+          ];
+          // const orderedData = data.sort((a, b) => a. > b.name ? 1 : -1)
+        });
+      }
     };
     getQuotes().finally(() => setIsLoading(false));
-  }, [selectedCities]);
+  }, [selectedCity]);
 
-  function handleChange(values: Array<number>) {
+  const handleChange = (values: Array<number>) => {
     const selected = cities?.filter((city) => values.includes(city.id));
-    setSelectedCities(selected || []);
+    setCurrentCities(selected || []);
   }
 
-  console.log({ dataQuota });
+  const onSelect = (cityId: any) => {
+    setSelectedCity(cityId);
+  }
+  
+  const onDeselect = (cityId: any) => {
+    setDataQuota((oldData) => {
+      return oldData.filter(quota => quota.city.id !== cityId);
+    });
+  }
 
   return (
     <Layout title="Create Next App">
@@ -170,7 +193,9 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
                   style={{ width: "100%" }}
                   placeholder="Please select"
                   onChange={handleChange}
-                  value={selectedCities.map((city) => city.id)}
+                  onSelect={onSelect}
+                  onDeselect={onDeselect}
+                  value={currentCities.map((city) => city.id)}
                 >
                   {cities?.map((city: City) => (
                     <Option key={city.id} value={city.id}>

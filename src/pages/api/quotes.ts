@@ -13,9 +13,11 @@ const mapChaco = (item: any) => {
     if(item.data.length === 0) {
         return;
     }
+    const office = CHACO_OFFICES.find(office => office.branchId === parseInt(item.data.branchOfficeId));
     return {
         company: "CHACO",
-        office: CHACO_OFFICES.find(office => office.branchId === parseInt(item.data.branchOfficeId)),
+        office,
+        city: CITIES.find(city => city.id === office?.city),
         branchOfficeId: item.data.branchOfficeId,
         usd: {
             purchasePrice: item.data.items.find((currency:any) => currency.isoCode === 'USD').purchasePrice,
@@ -42,6 +44,7 @@ const mapSantaRita2 = (item: any,stOffice: Office) => {
         company: "SANTA RITA CAMBIOS",
         office: stOffice,
         branchOfficeId: stOffice.branchId,
+        city: CITIES.find(city => city.id === stOffice.city),
         usd: {
             purchasePrice: parseInt(item.data.quotes['USDxPYG'].amount_buy),
             salePrice: parseInt(item.data.quotes['USDxPYG'].amount_sell),

@@ -9,7 +9,7 @@ const columns = [
     title: "Casa de Câmbio",
     key: "name",
     render: (row: Quote) => {
-      return <span>{row?.office?.name}</span>;
+      return <span>[{row?.city?.name}] {row?.company} - {row?.office?.name}</span>;
     },
   },
   {

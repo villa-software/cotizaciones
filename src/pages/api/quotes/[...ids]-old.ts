@@ -7,16 +7,15 @@ import { Office } from 'src/types';
 import { CHACO_OFFICES, CITIES, SANTA_RITA_CAMBIOS_OFFICES } from 'src/utils/consts';
 import { successResponse } from 'src/utils/response.utils';
 ;
+const getChaco = async () => await Promise.all(CHACO_OFFICES.map(async office => axios.get(`https://www.cambioschaco.com.py/api/branch_office/${office.branchId}/exchange`)));
 const mapChaco = (item: any) => { 
     if(item.data.length === 0) {
         return;
     }
-    const office = CHACO_OFFICES.find(office => office.branchId === parseInt(item.data.branchOfficeId));
     return {
         company: "CHACO",
-        office,
+        office: CHACO_OFFICES.find(office => office.branchId === parseInt(item.data.branchOfficeId)),
         branchOfficeId: item.data.branchOfficeId,
-        city: CITIES.find(city => city.id === office?.city),
         usd: {
             purchasePrice: item.data.items.find((currency:any) => currency.isoCode === 'USD').purchasePrice,
             salePrice: item.data.items.find((currency:any) => currency.isoCode === 'USD').salePrice,
@@ -36,11 +35,11 @@ const mapChaco = (item: any) => {
         defaultCurrency: 'PYG'
     }
 };
-const mapSantaRita = (item: any,stOffice: Office) => { 
+const getSantaRita2 = async () => await Promise.all(SANTA_RITA_CAMBIOS_OFFICES.map(async office => await axios.get(`http://admin.santaritacambios.com.py/rest/get-quotes?s=${office.branchId}`)));
+const mapSantaRita2 = (item: any,stOffice: Office) => { 
     return { 
         company: "SANTA RITA CAMBIOS",
         office: stOffice,
-        city: CITIES.find(city => city.id === stOffice.city),
         branchOfficeId: stOffice.branchId,
         usd: {
             purchasePrice: parseInt(item.data.quotes['USDxPYG'].amount_buy),
@@ -61,6 +60,34 @@ const mapSantaRita = (item: any,stOffice: Office) => {
         defaultCurrency: 'PYG'
     };
 };
+const getSantaRita = async (currentValues: Array<any>) => {
+    const santaRitaData = await Promise.all(SANTA_RITA_CAMBIOS_OFFICES.map(async office => {
+        const item = await axios.get(`http://admin.santaritacambios.com.py/rest/get-quotes?s=${office.branchId}`);
+        return { 
+            company: "SANTA RITA CAMBIOS",
+            office,
+            branchOfficeId: 0,
+            usd: {
+                purchasePrice: parseInt(item.data.quotes['USDxPYG'].amount_buy),
+                salePrice: parseInt(item.data.quotes['USDxPYG'].amount_sell),
+            },
+            brl: {
+                purchasePrice: parseInt(item.data.quotes['BRLxPYG'].amount_buy),
+                salePrice: parseInt(item.data.quotes['BRLxPYG'].amount_sell),
+            },
+            ars: {
+                purchasePrice: parseInt(item.data.quotes['ARSxPYG'].amount_buy),
+                salePrice: parseInt(item.data.quotes['ARSxPYG'].amount_sell),
+            },
+            eur: {
+                purchasePrice: parseInt(item.data.quotes['EURxPYG'].amount_buy),
+                salePrice: parseInt(item.data.quotes['EURxPYG'].amount_sell),
+            },
+            defaultCurrency: 'PYG'
+        };
+    }));
+    return [...currentValues, ...santaRitaData];
+}
    
 const getCityOffices = async (req: NextApiRequest) => {
     const { ids } = req.query;
@@ -81,7 +108,7 @@ const getCityOffices = async (req: NextApiRequest) => {
     for (let index = 0; index < santaRitaOffices.length; index++) {
         const stOffice = santaRitaOffices[index];
         const santaRita = await axios.get(`http://admin.santaritacambios.com.py/rest/get-quotes?s=${stOffice.branchId}`);
-        sanaRitaData.push(mapSantaRita(santaRita, stOffice));
+        sanaRitaData.push(mapSantaRita2(santaRita, stOffice));
     }
 
     const result = [...chacoData.map(mapChaco), ...sanaRitaData];
