@@ -17,7 +17,8 @@ import { Select } from "antd";
 const { Option } = Select;
 
 import { InputGroup } from "../InputGroup";
-import axios from "axios";
+
+import { getQuotes } from "../../services";
 
 interface Props {
   language: Languages;
@@ -83,30 +84,22 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
     );
   }
 
-  useEffect(() => {
-    const getQuotes = async () => {
-      setIsLoading(true);
-      const jsonData = await fetch(
-        process.env.NODE_ENV === "production"
-          ? `https://cotizacionespy.vercel.app/api/quotes/${selectedCity}`
-          : `http://localhost:3000/api/quotes/${selectedCity}`
-      );
-      // const selectedCitiesUrl = currentCities.map((city) => city.id).join("/");
-      // const jsonData = await fetch(
-      //   process.env.NODE_ENV === "production"
-      //     ? `https://cotizacionespy.vercel.app/api/quotes/${selectedCitiesUrl}`
-      //     : `http://localhost:3000/api/quotes/${selectedCitiesUrl}`
-      // );
+  async function handleGetQuotes() {
+    setIsLoading(true);
 
-      const { data }: ApiResponse = await jsonData.json();
-      if (data && data.length) {
-        setDataQuota((oldData) => {
-          return [...oldData, ...data];
-          // const orderedData = data.sort((a, b) => a. > b.name ? 1 : -1)
-        });
-      }
-    };
-    getQuotes().finally(() => setIsLoading(false));
+    const data = await getQuotes(selectedCity).finally(() =>
+      setIsLoading(false)
+    );
+
+    if (data && data.length) {
+      setDataQuota((oldData) => {
+        return [...oldData, ...data];
+      });
+    }
+  }
+
+  useEffect(() => {
+    handleGetQuotes();
   }, [selectedCity]);
 
   const handleChange = (values: Array<number>) => {
