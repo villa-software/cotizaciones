@@ -52,7 +52,7 @@ export const Layout = ({ title, children }: Props) => {
       component="div"
       style={{
         background: themeStyled.color.background,
-        height: "100vh",
+        minHeight: "100vh",
         position: "relative",
         display: "flex",
         flexDirection: "column",

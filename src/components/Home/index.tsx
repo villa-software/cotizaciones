@@ -99,12 +99,9 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
       // );
 
       const { data }: ApiResponse = await jsonData.json();
-      if(data && data.length){
+      if (data && data.length) {
         setDataQuota((oldData) => {
-          return [
-            ...oldData,
-            ...data
-          ];
+          return [...oldData, ...data];
           // const orderedData = data.sort((a, b) => a. > b.name ? 1 : -1)
         });
       }
@@ -115,17 +112,17 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
   const handleChange = (values: Array<number>) => {
     const selected = cities?.filter((city) => values.includes(city.id));
     setCurrentCities(selected || []);
-  }
+  };
 
   const onSelect = (cityId: any) => {
     setSelectedCity(cityId);
-  }
-  
+  };
+
   const onDeselect = (cityId: any) => {
     setDataQuota((oldData) => {
-      return oldData.filter(quota => quota.city.id !== cityId);
+      return oldData.filter((quota) => quota.city.id !== cityId);
     });
-  }
+  };
 
   return (
     <Layout title="Create Next App">
