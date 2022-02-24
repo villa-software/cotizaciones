@@ -7,8 +7,10 @@ import { MyTable } from "../Table";
 import { Layout } from "../Layout";
 
 import { themeStyled } from "../../styles/themes/styled";
-import { Languages, City, ApiResponse, Quote } from "../../types";
+import { Languages, City, ApiResponse, Quote, Currencies } from "../../types";
 import { languagesHome } from "./languages";
+
+import { currencies } from "../../constants/currencies";
 
 import { useMediaQuery } from "../../hooks/useMediaQuery";
 
@@ -28,10 +30,8 @@ interface Props {
 }
 
 const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
-  const [currencyFrom, setCurrencyFrom] = useState<"USD" | "BRL" | "PYG">(
-    "USD"
-  );
-  const [currencyTo, setCurrencyTo] = useState<"USD" | "BRL" | "PYG">("PYG");
+  const [currencyFrom, setCurrencyFrom] = useState<Currencies>("USD");
+  const [currencyTo, setCurrencyTo] = useState<Currencies>("PYG");
   const [currencyValue, setCurrencyValue] = useState<number>(1);
   const [currentCities, setCurrentCities] = useState<City[]>([defaultCity]);
   const [selectedCity, setSelectedCity] = useState<number>();
@@ -41,21 +41,6 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { isNotebook } = useMediaQuery();
-
-  const currencies = [
-    {
-      value: "USD",
-      label: "USD",
-    },
-    {
-      value: "BRL",
-      label: "BRL",
-    },
-    {
-      value: "PYG",
-      label: "PYG",
-    },
-  ];
 
   // function getCurrentCurrencyValue(PYGvalue?: number | undefined) {
   //   if (data) {
@@ -76,13 +61,6 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
   // useEffect(() => {
   //   getCurrentCurrencyValue(currencyValue);
   // }, [data, currencyFrom, currencyTo, currencyValue]);
-
-  const children = [];
-  for (let i = 10; i < 36; i++) {
-    children.push(
-      <Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>
-    );
-  }
 
   async function handleGetQuotes() {
     setIsLoading(true);

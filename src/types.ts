@@ -29,10 +29,10 @@ export type Quote = {
     office: Office;
     city: City;
     branchOfficeId: string;
-    usd:QuoteCurrency;
-    brl:QuoteCurrency;
-    ars:QuoteCurrency;
-    eur:QuoteCurrency;
+    usd: QuoteCurrency;
+    brl: QuoteCurrency;
+    ars: QuoteCurrency;
+    eur: QuoteCurrency;
 }
 
 export type ApiResponse = {
@@ -42,3 +42,5 @@ export type ApiResponse = {
 }
 
 export type Languages = "pt" | "es"
+
+export type Currencies = "USD" | "BRL" | "PYG"

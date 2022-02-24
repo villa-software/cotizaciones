@@ -9,7 +9,6 @@ export const getQuotes = async (cityId: number | undefined) => {
             : `http://localhost:3000/api/quotes/${cityId}`
     );
 
-
     const { data }: ApiResponse = await jsonData.json();
 
     return data
