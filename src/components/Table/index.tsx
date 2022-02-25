@@ -31,7 +31,9 @@ const getColumns = ({ currencyTo, currencyFrom }: ColumnProps) => {
       render: (row: Quote) => {
         return (
           <span>
-            {convertQuote(currencyFrom, currencyTo, row)?.purchasePrice}
+            {convertQuote(currencyFrom, currencyTo, row)?.purchasePrice.toFixed(
+              2
+            )}
           </span>
         );
       },
@@ -41,7 +43,9 @@ const getColumns = ({ currencyTo, currencyFrom }: ColumnProps) => {
       key: "address",
       render: (row: Quote) => {
         return (
-          <span>{convertQuote(currencyFrom, currencyTo, row)?.salePrice}</span>
+          <span>
+            {convertQuote(currencyFrom, currencyTo, row)?.salePrice.toFixed(2)}
+          </span>
         );
       },
     },

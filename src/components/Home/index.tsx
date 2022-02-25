@@ -37,8 +37,6 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
   const [selectedCity, setSelectedCity] = useState<number>();
   // const [onSelectedCities, setOnSelectedCities] = useState<number[]>();
 
-  console.log({ currencyTo });
-
   const [dataQuota, setDataQuota] = useState<Quote[]>(data);
   const [isLoading, setIsLoading] = useState(false);
 
