@@ -30,12 +30,14 @@ interface Props {
 }
 
 const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
-  const [currencyFrom, setCurrencyFrom] = useState<Currencies>("USD");
-  const [currencyTo, setCurrencyTo] = useState<Currencies>("PYG");
+  const [currencyFrom, setCurrencyFrom] = useState<Currencies>("usd");
+  const [currencyTo, setCurrencyTo] = useState<Currencies>("pyg");
   const [currencyValue, setCurrencyValue] = useState<number>(1);
   const [currentCities, setCurrentCities] = useState<City[]>([defaultCity]);
   const [selectedCity, setSelectedCity] = useState<number>();
   // const [onSelectedCities, setOnSelectedCities] = useState<number[]>();
+
+  console.log({ currencyTo });
 
   const [dataQuota, setDataQuota] = useState<Quote[]>(data);
   const [isLoading, setIsLoading] = useState(false);
@@ -94,6 +96,8 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
       return oldData.filter((quota) => quota.city.id !== cityId);
     });
   };
+
+  console.log({ dataQuota });
 
   return (
     <Layout title="Create Next App">
@@ -234,7 +238,11 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
           }}
         >
           <Loader loading={isLoading} />
-          <MyTable data={dataQuota} />
+          <MyTable
+            data={dataQuota}
+            currencyFrom={currencyFrom}
+            currencyTo={currencyTo}
+          />
         </Box>
       </Box>
     </Layout>

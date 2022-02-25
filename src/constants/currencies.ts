@@ -1,14 +1,14 @@
 export const currencies = [
     {
-        value: "USD",
+        value: "usd",
         label: "USD",
     },
     {
-        value: "BRL",
+        value: "brl",
         label: "BRL",
     },
     {
-        value: "PYG",
+        value: "pyg",
         label: "PYG",
     },
 ];

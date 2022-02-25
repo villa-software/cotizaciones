@@ -43,4 +43,4 @@ export type ApiResponse = {
 
 export type Languages = "pt" | "es"
 
-export type Currencies = "USD" | "BRL" | "PYG"
+export type Currencies = "usd" | "brl" | "pyg"
