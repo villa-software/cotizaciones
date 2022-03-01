@@ -25,11 +25,6 @@ const getColumns = ({
     return value <= 0 ? 1 : value;
   }
 
-  /*  console.log({
-    value: getCurrencyValue(),
-    type: typeof getCurrencyValue(),
-  }); */
-
   return [
     {
       title: "Casa de Câmbio",

@@ -77,6 +77,21 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
   }
 
   useEffect(() => {
+    if (currencyFrom === currencyTo) {
+      switch (currencyFrom) {
+        case "usd":
+          setCurrencyTo("pyg");
+          break;
+        case "pyg":
+          setCurrencyTo("usd");
+          break;
+        default:
+          setCurrencyTo("pyg");
+      }
+    }
+  }, [currencyFrom]);
+
+  useEffect(() => {
     handleGetQuotes();
   }, [selectedCity]);
 
@@ -94,8 +109,6 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
       return oldData.filter((quota) => quota.city.id !== cityId);
     });
   };
-
-  console.log({ dataQuota });
 
   return (
     <Layout title="Create Next App">
@@ -217,7 +230,11 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
                   size="large"
                 >
                   {currencies.map((currency) => (
-                    <Option key={currency.value} value={currency.value}>
+                    <Option
+                      key={currency.value}
+                      value={currency.value}
+                      disabled={currency.value === currencyFrom}
+                    >
                       {currency.label}
                     </Option>
                   ))}
