@@ -32,7 +32,7 @@ interface Props {
 const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
   const [currencyFrom, setCurrencyFrom] = useState<Currencies>("usd");
   const [currencyTo, setCurrencyTo] = useState<Currencies>("pyg");
-  const [currencyValue, setCurrencyValue] = useState<number>(1);
+  const [currencyValue, setCurrencyValue] = useState<string>("1");
   const [currentCities, setCurrentCities] = useState<City[]>([defaultCity]);
   const [selectedCity, setSelectedCity] = useState<number>();
   // const [onSelectedCities, setOnSelectedCities] = useState<number[]>();
@@ -238,6 +238,7 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
           <Loader loading={isLoading} />
           <MyTable
             data={dataQuota}
+            currencyValue={currencyValue}
             currencyFrom={currencyFrom}
             currencyTo={currencyTo}
           />

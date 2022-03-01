@@ -6,13 +6,30 @@ import { convertQuote } from "../../utils/convertQuotes";
 interface ColumnProps {
   currencyFrom: Currencies;
   currencyTo: Currencies;
+  currencyValue: string;
 }
 
 interface TableProps extends ColumnProps {
   data: Quote[];
 }
 
-const getColumns = ({ currencyTo, currencyFrom }: ColumnProps) => {
+const getColumns = ({
+  currencyTo,
+  currencyValue,
+  currencyFrom,
+}: ColumnProps) => {
+  function getCurrencyValue() {
+    const value = parseFloat(currencyValue);
+    if (!value) return 1;
+
+    return value <= 0 ? 1 : value;
+  }
+
+  /*  console.log({
+    value: getCurrencyValue(),
+    type: typeof getCurrencyValue(),
+  }); */
+
   return [
     {
       title: "Casa de Câmbio",
@@ -31,9 +48,10 @@ const getColumns = ({ currencyTo, currencyFrom }: ColumnProps) => {
       render: (row: Quote) => {
         return (
           <span>
-            {convertQuote(currencyFrom, currencyTo, row)?.purchasePrice.toFixed(
-              2
-            )}
+            {(
+              convertQuote(currencyFrom, currencyTo, row)?.purchasePrice *
+              getCurrencyValue()
+            ).toFixed(2)}
           </span>
         );
       },
@@ -44,7 +62,10 @@ const getColumns = ({ currencyTo, currencyFrom }: ColumnProps) => {
       render: (row: Quote) => {
         return (
           <span>
-            {convertQuote(currencyFrom, currencyTo, row)?.salePrice.toFixed(2)}
+            {(
+              convertQuote(currencyFrom, currencyTo, row)?.salePrice *
+              getCurrencyValue()
+            ).toFixed(2)}
           </span>
         );
       },
@@ -52,11 +73,16 @@ const getColumns = ({ currencyTo, currencyFrom }: ColumnProps) => {
   ];
 };
 
-export const MyTable = ({ data, currencyTo, currencyFrom }: TableProps) => {
+export const MyTable = ({
+  data,
+  currencyValue,
+  currencyTo,
+  currencyFrom,
+}: TableProps) => {
   return (
     <Table
       dataSource={data}
-      columns={getColumns({ currencyTo, currencyFrom })}
+      columns={getColumns({ currencyTo, currencyFrom, currencyValue })}
       rowKey={(record) =>
         `[${record?.city?.name}] ${record?.company} - ${record?.office?.name}`
       }
