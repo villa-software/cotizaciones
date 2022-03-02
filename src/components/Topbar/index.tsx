@@ -69,26 +69,11 @@ export const Topbar = ({ hasScrolled }: Props) => {
         src={
           hasScrolled ? "/logos/ideia-logo-02.svg" : "/logos/ideia-logo-03.svg"
         }
-        width={isNotebook ? "250px" : "200px"}
-        height={isNotebook ? "50px" : "40px"}
+        width="200px"
+        height="40px"
         objectFit="contain"
         alt="cotizacionespy"
       />
-      {/* <TextField
-        id="outlined-select-currency"
-        select
-        value={currentLanguage}
-        onChange={handleChange}
-        style={{
-          width: "5rem",
-        }}
-      >
-        {languages.map((option: any) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
-          </MenuItem>
-        ))}
-      </TextField> */}
     </Box>
   );
 };

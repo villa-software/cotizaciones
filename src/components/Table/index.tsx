@@ -43,10 +43,10 @@ const getColumns = ({
       render: (row: Quote) => {
         return (
           <span>
-            {(
+            {new Intl.NumberFormat("de-DE").format(
               convertQuote(currencyFrom, currencyTo, row)?.purchasePrice *
-              getCurrencyValue()
-            ).toFixed(2)}
+                getCurrencyValue()
+            )}
           </span>
         );
       },
@@ -57,10 +57,10 @@ const getColumns = ({
       render: (row: Quote) => {
         return (
           <span>
-            {(
+            {new Intl.NumberFormat("de-DE").format(
               convertQuote(currencyFrom, currencyTo, row)?.salePrice *
-              getCurrencyValue()
-            ).toFixed(2)}
+                getCurrencyValue()
+            )}
           </span>
         );
       },
