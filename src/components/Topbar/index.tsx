@@ -1,15 +1,9 @@
-import { useState, ChangeEvent, useEffect } from "react";
-import { Box, TextField, MenuItem } from "@mui/material";
-import { useRouter } from "next/router";
+import { Box } from "@mui/material";
 import Image from "next/image";
-
-import { themeStyled } from "../../styles/themes/styled";
+import { useRouter } from "next/router";
+import React, { ChangeEvent, useEffect, useState, useMemo } from "react";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
-
-//import Logo from "/logos/ideia-logo-02.svg";
-
 import { Languages } from "../../types";
-
 interface Props {
   hasScrolled: boolean;
 }
@@ -18,7 +12,7 @@ export const Topbar = ({ hasScrolled }: Props) => {
   const [currentLanguage, setCurrentLanguage] = useState<Languages>("es");
   const { route, push: redirectTo } = useRouter();
 
-  const languages: { value: Languages; label: "PT" | "ES" }[] = [
+  const languages: { value: Languages; label: "PT" | "ES" }[] = useMemo(() => ([
     {
       value: "pt",
       label: "PT",
@@ -27,7 +21,7 @@ export const Topbar = ({ hasScrolled }: Props) => {
       value: "es",
       label: "ES",
     },
-  ];
+  ]), []);
 
   const handleChange = (
     event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -47,7 +41,7 @@ export const Topbar = ({ hasScrolled }: Props) => {
         return currentRoute ? currentRoute.value : "es";
       });
     }
-  }, [route]);
+  }, [route, languages]);
 
   return (
     <Box

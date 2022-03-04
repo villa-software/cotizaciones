@@ -1,27 +1,18 @@
 import { Box } from "@mui/material";
+import { Input, Select } from "antd";
 import type { NextPage } from "next";
-import { useState, useEffect } from "react";
-
+import { useEffect, useState } from "react";
+import { currencies } from "../../constants/currencies";
+import { useMediaQuery } from "../../hooks/useMediaQuery";
+import { getQuotes } from "../../services";
+import { themeStyled } from "../../styles/themes/styled";
+import { City, Currencies, Languages, Quote } from "../../types";
+import { InputGroup } from "../InputGroup";
+import { Layout } from "../Layout";
 import { Loader } from "../Loader";
 import { MyTable } from "../Table";
-import { Layout } from "../Layout";
 
-import { themeStyled } from "../../styles/themes/styled";
-import { Languages, City, ApiResponse, Quote, Currencies } from "../../types";
-import { languagesHome } from "./languages";
-
-import { currencies } from "../../constants/currencies";
-
-import { useMediaQuery } from "../../hooks/useMediaQuery";
-
-import { Input } from "antd";
-import { Select } from "antd";
 const { Option } = Select;
-
-import { InputGroup } from "../InputGroup";
-
-import { getQuotes } from "../../services";
-
 interface Props {
   language: Languages;
   data?: any;
@@ -89,10 +80,11 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
           setCurrencyTo("pyg");
       }
     }
-  }, [currencyFrom]);
+  }, [currencyFrom, currencyTo]);
 
   useEffect(() => {
     handleGetQuotes();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCity]);
 
   const handleChange = (values: Array<number>) => {
