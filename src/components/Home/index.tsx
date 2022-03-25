@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import type { NextPage } from "next";
-import { useState, useEffect } from "react";
+import { useState, useEffect, FormEvent } from "react";
 
 import { Loader } from "../Loader";
 import { MyTable } from "../Table";
@@ -11,15 +11,14 @@ import { Languages, City, ApiResponse, Quote, Currencies } from "../../types";
 import { languagesHome } from "./languages";
 
 import { currencies } from "../../constants/currencies";
-
 import { useMediaQuery } from "../../hooks/useMediaQuery";
+import { currencyMask } from "../../utils/currencyMask";
 
 import { Input } from "antd";
 import { Select } from "antd";
 const { Option } = Select;
 
 import { InputGroup } from "../InputGroup";
-
 import { getQuotes } from "../../services";
 
 interface Props {
@@ -215,9 +214,10 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
               <InputGroup label="Valor:">
                 <Input
                   value={currencyValue}
-                  onChange={(e: any) => setCurrencyValue(e.target.value)}
+                  onChange={(e: FormEvent<HTMLInputElement>) =>
+                    setCurrencyValue(currencyMask(e))
+                  }
                   placeholder="Digite o valor"
-                  type="number"
                   size="large"
                 />
               </InputGroup>
