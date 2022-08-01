@@ -1,8 +1,18 @@
 import { Currencies, Quote } from "src/types";
 
-export const convertQuote = (from: Currencies, to: Currencies, data: Quote) => {
-    console.log({ data })
-    const conversions = {
+type ConvertedQuote = {
+    purchasePrice: number;
+    salePrice: number;
+}
+
+type Conversions = {
+    pyg: any;
+    brl: any;
+    usd: any;
+}
+
+export const convertQuote = (from: Currencies, to: Currencies, data: Quote): ConvertedQuote => {
+    const conversions: Conversions = {
         pyg: {
             usd: {
                 purchasePrice: 1 / data.usd.purchasePrice,
@@ -35,5 +45,6 @@ export const convertQuote = (from: Currencies, to: Currencies, data: Quote) => {
         }
     };
 
-    return conversions[from][to];
+    const result: ConvertedQuote = conversions[from][to];
+    return result;
 };
