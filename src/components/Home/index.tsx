@@ -28,6 +28,9 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
   const [currencyValue, setCurrencyValue] = useState<string>("1");
   const [currentCities, setCurrentCities] = useState<City[]>([defaultCity]);
   const [selectedCity, setSelectedCity] = useState<number>();
+  const [purchaseOrSale, setPurchaseOrSale] = useState<"purchase" | "sale">(
+    "purchase"
+  );
   // const [onSelectedCities, setOnSelectedCities] = useState<number[]>();
 
   const [dataQuota, setDataQuota] = useState<Quote[]>(data);
@@ -69,6 +72,25 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
     }
   }
 
+  function getPurchaseOrSale(from: string, to: string) {
+    const cases = {
+      brl: {
+        pyg: "purchase",
+        usd: "purchase",
+      },
+      pyg: {
+        brl: "sale",
+        usd: "sale",
+      },
+      usd: {
+        brl: "sale",
+        pyg: "purchase",
+      },
+    };
+
+    return cases[from][to];
+  }
+
   useEffect(() => {
     if (currencyFrom === currencyTo) {
       switch (currencyFrom) {
@@ -82,6 +104,8 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
           setCurrencyTo("pyg");
       }
     }
+
+    setPurchaseOrSale(() => getPurchaseOrSale(currencyFrom, currencyTo));
   }, [currencyFrom, currencyTo]);
 
   useEffect(() => {
@@ -100,7 +124,13 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
 
   const onDeselect = (cityId: any) => {
     setDataQuota((oldData) => {
-      return oldData.filter((quota) => quota.city.id !== cityId);
+      return oldData.filter(
+        (quota, index) =>
+          quota.city.id !== cityId && {
+            ...quota,
+            index,
+          }
+      );
     });
   };
 
@@ -251,6 +281,7 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
             currencyValue={currencyValue}
             currencyFrom={currencyFrom}
             currencyTo={currencyTo}
+            purchaseOrSale={purchaseOrSale}
           />
         </Box>
       </Box>

@@ -1,6 +1,7 @@
 import { Currencies, Quote } from "src/types";
 
 export const convertQuote = (from: Currencies, to: Currencies, data: Quote) => {
+    console.log({ data })
     const conversions = {
         pyg: {
             usd: {

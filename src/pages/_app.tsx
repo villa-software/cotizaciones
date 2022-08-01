@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import * as gtag from "../lib/gtag";
 import "../styles/globals.css";
 import "antd/dist/antd.css";
+import "../styles/custom/antd.css";
 
 // @ts-ignore
 const App = ({ Component, pageProps }) => {

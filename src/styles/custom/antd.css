@@ -1,0 +1,10 @@
+.ant-table-row span {
+    border: solid 2px transparent;
+}
+
+.ant-table-row:first-child .best-quote {
+    border-color: yellow;
+}
+.ant-table-row:nth-child(2) .best-quote {
+    border-color: gray;
+}
