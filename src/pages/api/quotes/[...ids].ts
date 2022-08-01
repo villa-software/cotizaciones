@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { curry } from 'lodash/fp';
 import type { NextApiRequest, NextApiResponse } from 'next';
+//@ts-ignore
 import asyncPipe from 'pipeawait';
 import { Office } from 'src/types';
 import { CHACO_OFFICES, CITIES, SANTA_RITA_CAMBIOS_OFFICES } from 'src/utils/consts';
