@@ -12,6 +12,8 @@ import { Layout } from "../Layout";
 import { Loader } from "../Loader";
 import { MyTable } from "../Table";
 
+import { currencyMask } from "../../utils/currencyMask";
+
 const { Option } = Select;
 interface Props {
   language: Languages;
@@ -84,7 +86,7 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
 
   useEffect(() => {
     handleGetQuotes();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCity]);
 
   const handleChange = (values: Array<number>) => {
@@ -207,9 +209,8 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
               <InputGroup label="Valor:">
                 <Input
                   value={currencyValue}
-                  onChange={(e: any) => setCurrencyValue(e.target.value)}
+                  onChange={(e) => setCurrencyValue(currencyMask(e))}
                   placeholder="Digite o valor"
-                  type="number"
                   size="large"
                 />
               </InputGroup>
