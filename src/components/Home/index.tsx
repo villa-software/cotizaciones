@@ -28,7 +28,7 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
   const [currencyValue, setCurrencyValue] = useState<string>("1");
   const [currentCities, setCurrentCities] = useState<City[]>([defaultCity]);
   const [selectedCity, setSelectedCity] = useState<number>();
-  const [purchaseOrSale, setPurchaseOrSale] = useState<"purchase" | "sale">(
+  const [exchangeType, setExchangeType] = useState<"purchase" | "sale">(
     "purchase"
   );
   // const [onSelectedCities, setOnSelectedCities] = useState<number[]>();
@@ -105,7 +105,7 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
       }
     }
 
-    setPurchaseOrSale(() => getPurchaseOrSale(currencyFrom, currencyTo));
+    setExchangeType(() => getPurchaseOrSale(currencyFrom, currencyTo));
   }, [currencyFrom, currencyTo]);
 
   useEffect(() => {
@@ -283,7 +283,7 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
             currencyValue={currencyValue}
             currencyFrom={currencyFrom}
             currencyTo={currencyTo}
-            purchaseOrSale={purchaseOrSale}
+            exchangeType={exchangeType}
           />
         </Box>
       </Box>

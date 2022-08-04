@@ -7,7 +7,7 @@ interface ColumnProps {
   currencyFrom: Currencies;
   currencyTo: Currencies;
   currencyValue: string;
-  purchaseOrSale: "purchase" | "sale";
+  exchangeType: "purchase" | "sale";
 }
 
 interface TableProps extends ColumnProps {
@@ -18,7 +18,7 @@ const getColumns = ({
   currencyTo,
   currencyValue,
   currencyFrom,
-  purchaseOrSale,
+  exchangeType,
 }: ColumnProps) => {
   function getCurrencyValue() {
     let currencyValueFormated = "";
@@ -53,7 +53,7 @@ const getColumns = ({
       key: "age",
       render: (row: Quote) => {
         return (
-          <span className={purchaseOrSale === "purchase" ? "best-quote" : ""}>
+          <span className={exchangeType === "purchase" ? "best-quote" : ""}>
             {new Intl.NumberFormat("de-DE").format(
               convertQuote(currencyFrom, currencyTo, row)?.purchasePrice *
                 getCurrencyValue()
@@ -67,7 +67,7 @@ const getColumns = ({
       key: "address",
       render: (row: Quote) => {
         return (
-          <span className={purchaseOrSale === "sale" ? "best-quote" : ""}>
+          <span className={exchangeType === "sale" ? "best-quote" : ""}>
             {new Intl.NumberFormat("de-DE").format(
               convertQuote(currencyFrom, currencyTo, row)?.salePrice *
                 getCurrencyValue()
@@ -84,7 +84,7 @@ export const MyTable = ({
   currencyValue,
   currencyTo,
   currencyFrom,
-  purchaseOrSale,
+  exchangeType,
 }: TableProps) => {
   return (
     <Table
@@ -93,7 +93,7 @@ export const MyTable = ({
         currencyTo,
         currencyFrom,
         currencyValue,
-        purchaseOrSale,
+        exchangeType,
       })}
       rowKey={(record) => {
         return `[${record?.city?.name}] ${record?.company} - ${record?.office?.name}`;
