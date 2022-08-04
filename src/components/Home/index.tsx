@@ -13,6 +13,8 @@ import { Loader } from "../Loader";
 import { MyTable } from "../Table";
 
 import { currencyMask } from "../../utils/currencyMask";
+import { convertQuote } from "src/utils/convertQuotes";
+import { addAbortSignal } from "stream";
 
 const { Option } = Select;
 interface Props {
@@ -133,6 +135,46 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
       );
     });
   };
+
+  function getCurrencyValueNumber(value: string) {
+    let currencyValue = "";
+
+    const [number, cents] = value.split(",");
+
+    const numberOnlyNumbers = number.split(".");
+    numberOnlyNumbers.forEach((value) => (currencyValue += value));
+
+    currencyValue += cents ? `.${cents}` : "";
+
+    const currencyValueFormated = parseFloat(currencyValue);
+    if (!currencyValueFormated) return 1;
+
+    return currencyValueFormated <= 0 ? 1 : currencyValueFormated;
+  }
+
+  const dataQuoteFormated = dataQuota
+    .map((quota, index) => ({
+      key: `${quota?.city?.name} ${quota?.company} - ${quota?.office?.name}`,
+      index: index,
+      city_company_office: (
+        <span>
+          <b>{quota?.city?.name}</b> {quota?.company} - {quota?.office?.name}
+        </span>
+      ),
+      purchase: new Intl.NumberFormat("de-DE").format(
+        convertQuote(currencyFrom, currencyTo, quota)?.purchasePrice *
+          getCurrencyValueNumber(currencyValue)
+      ),
+      sale: new Intl.NumberFormat("de-DE").format(
+        convertQuote(currencyFrom, currencyTo, quota)?.salePrice *
+          getCurrencyValueNumber(currencyValue)
+      ),
+    }))
+    .sort((a, b) => {
+      if (a[exchangeType] > b[exchangeType]) return -1;
+      if (a[exchangeType] < b[exchangeType]) return 1;
+      return 0;
+    });
 
   return (
     <Layout title="Create Next App">
@@ -278,13 +320,7 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
           }}
         >
           <Loader loading={isLoading} />
-          <MyTable
-            data={dataQuota}
-            currencyValue={currencyValue}
-            currencyFrom={currencyFrom}
-            currencyTo={currencyTo}
-            exchangeType={exchangeType}
-          />
+          <MyTable data={dataQuoteFormated} />
         </Box>
       </Box>
     </Layout>
