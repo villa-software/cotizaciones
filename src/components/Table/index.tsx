@@ -21,7 +21,16 @@ const getColumns = ({
   purchaseOrSale,
 }: ColumnProps) => {
   function getCurrencyValue() {
-    const value = parseFloat(currencyValue.replace(".", "").replace(",", "."));
+    let currencyValueFormated = "";
+
+    const [number, cents] = currencyValue.split(",");
+
+    const numberOnlyNumbers = number.split(".");
+    numberOnlyNumbers.forEach((value) => (currencyValueFormated += value));
+
+    currencyValueFormated += cents ? `.${cents}` : "";
+
+    const value = parseFloat(currencyValueFormated);
     if (!value) return 1;
 
     return value <= 0 ? 1 : value;

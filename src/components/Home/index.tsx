@@ -239,7 +239,9 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
               <InputGroup label="Valor:">
                 <Input
                   value={currencyValue}
-                  onChange={(e) => setCurrencyValue(currencyMask(e))}
+                  onChange={(e) =>
+                    setCurrencyValue(currencyMask(e.target.value))
+                  }
                   placeholder="Digite o valor"
                   size="large"
                 />

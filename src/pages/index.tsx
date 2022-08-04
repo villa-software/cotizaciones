@@ -6,7 +6,7 @@ export async function getServerSideProps() {
   const jsonData = await fetch(
     process.env.NODE_ENV === "production"
       ? "https://cotizacionespy.vercel.app/api/quotes"
-      : "http://localhost:3001/api/quotes"
+      : "http://localhost:3000/api/quotes"
   );
 
   const data: ApiResponse = await jsonData.json();
@@ -14,7 +14,7 @@ export async function getServerSideProps() {
   const jsonCities = await fetch(
     process.env.NODE_ENV === "production"
       ? "https://cotizacionespy.vercel.app/api/cities"
-      : "http://localhost:3001/api/cities"
+      : "http://localhost:3000/api/cities"
   );
 
   const cities = await jsonCities.json();
