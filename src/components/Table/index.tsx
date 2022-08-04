@@ -95,8 +95,7 @@ export const MyTable = ({
         currencyValue,
         purchaseOrSale,
       })}
-      rowKey={(record, index) => {
-        console.log({ record });
+      rowKey={(record) => {
         return `[${record?.city?.name}] ${record?.company} - ${record?.office?.name}`;
       }}
     />

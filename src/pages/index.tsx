@@ -34,8 +34,6 @@ interface Props {
 }
 
 const Home: NextPage<Props> = (props) => {
-  console.log({ props });
-
   return <HomePage language="es" {...props} />;
 };
 
