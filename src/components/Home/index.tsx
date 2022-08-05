@@ -12,9 +12,8 @@ import { Layout } from "../Layout";
 import { Loader } from "../Loader";
 import { MyTable } from "../Table";
 
-import { currencyMask } from "../../utils/currencyMask";
+import { currencyMask, currencyMaskToNumber } from "../../utils/currency";
 import { convertQuote } from "src/utils/convertQuotes";
-import { addAbortSignal } from "stream";
 
 const { Option } = Select;
 interface Props {
@@ -136,23 +135,7 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
     });
   };
 
-  function getCurrencyValueNumber(value: string) {
-    let currencyValue = "";
-
-    const [number, cents] = value.split(",");
-
-    const numberOnlyNumbers = number.split(".");
-    numberOnlyNumbers.forEach((value) => (currencyValue += value));
-
-    currencyValue += cents ? `.${cents}` : "";
-
-    const currencyValueFormated = parseFloat(currencyValue);
-    if (!currencyValueFormated) return 1;
-
-    return currencyValueFormated <= 0 ? 1 : currencyValueFormated;
-  }
-
-  const dataQuoteFormated = dataQuota
+  const dataQuoteTable = dataQuota
     .map((quota, index) => ({
       key: `${quota?.city?.name} ${quota?.company} - ${quota?.office?.name}`,
       index: index,
@@ -163,11 +146,11 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
       ),
       purchase: new Intl.NumberFormat("de-DE").format(
         convertQuote(currencyFrom, currencyTo, quota)?.purchasePrice *
-          getCurrencyValueNumber(currencyValue)
+          currencyMaskToNumber(currencyValue)
       ),
       sale: new Intl.NumberFormat("de-DE").format(
         convertQuote(currencyFrom, currencyTo, quota)?.salePrice *
-          getCurrencyValueNumber(currencyValue)
+          currencyMaskToNumber(currencyValue)
       ),
     }))
     .sort((a, b) => {
@@ -320,7 +303,7 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
           }}
         >
           <Loader loading={isLoading} />
-          <MyTable data={dataQuoteFormated} />
+          <MyTable exchangeType={exchangeType} data={dataQuoteTable} />
         </Box>
       </Box>
     </Layout>

@@ -1,10 +1,9 @@
 .ant-table-row span {
+    padding: .25rem;
     border: solid 2px transparent;
 }
 
-.ant-table-row:first-child .best-quote {
+.ant-table-row .best-quote {
     border-color: yellow;
-}
-.ant-table-row:nth-child(2) .best-quote {
-    border-color: gray;
+    font-weight: 600;
 }
