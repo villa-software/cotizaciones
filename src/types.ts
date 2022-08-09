@@ -35,6 +35,14 @@ export type Quote = {
     eur: QuoteCurrency;
 }
 
+export type QuoteFormatedTable = {
+    key: string;
+    index: number;
+    city_company_office: JSX.Element;
+    purchase: string;
+    sale: string;
+};
+
 export type ApiResponse = {
     success: boolean;
     code: string;

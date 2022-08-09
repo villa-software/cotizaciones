@@ -1,0 +1,9 @@
+.ant-table-row span {
+    padding: .25rem;
+    border: solid 2px transparent;
+}
+
+.ant-table-row .best-quote {
+    border-color: yellow;
+    font-weight: 600;
+}

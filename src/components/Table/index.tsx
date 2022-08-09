@@ -1,86 +1,81 @@
-import { Currencies, Quote } from "src/types";
 import { Table } from "antd";
+import { currencyMaskToNumber } from "src/utils/currency";
 
-import { convertQuote } from "../../utils/convertQuotes";
-
-interface ColumnProps {
-  currencyFrom: Currencies;
-  currencyTo: Currencies;
-  currencyValue: string;
+type QuoteFormated = {
+  key: string;
+  index: number;
+  city_company_office: JSX.Element;
+  purchase: string;
+  sale: string;
+};
+interface TableProps {
+  data: QuoteFormated[];
+  exchangeType: "purchase" | "sale";
 }
 
-interface TableProps extends ColumnProps {
-  data: Quote[];
-}
+const columnsConfig = (
+  exchangeType: "purchase" | "sale",
+  bestQuote: number
+) => {
+  function isBestQuoteCompany(value: string) {
+    return currencyMaskToNumber(value) === bestQuote && bestQuote > 1;
+  }
 
-const getColumns = ({
-  currencyTo,
-  currencyValue,
-  currencyFrom,
-}: ColumnProps) => {
-  function getCurrencyValue() {
-    const value = parseFloat(currencyValue);
-    if (!value) return 1;
-
-    return value <= 0 ? 1 : value;
+  function isBestQuote(value: string, type: "purchase" | "sale") {
+    return isBestQuoteCompany(value) && exchangeType === type
+      ? "best-quote"
+      : "";
   }
 
   return [
     {
       title: "Casa de Câmbio",
-      key: "name",
-      render: (row: Quote) => {
-        return (
-          <span>
-            <b>{row?.city?.name}</b> {row?.company} - {row?.office?.name}
-          </span>
-        );
-      },
+      key: "city_company_office",
+      render: (row: QuoteFormated) => (
+        <span
+          className={isBestQuoteCompany(row[exchangeType]) ? "best-quote" : ""}
+        >
+          {row.city_company_office}
+        </span>
+      ),
     },
     {
       title: "Compra",
-      key: "age",
-      render: (row: Quote) => {
+      key: "purchase",
+      render: (row: QuoteFormated) => {
         return (
-          <span>
-            {new Intl.NumberFormat("de-DE").format(
-              convertQuote(currencyFrom, currencyTo, row)?.purchasePrice *
-                getCurrencyValue()
-            )}
+          <span className={isBestQuote(row.purchase, "purchase")}>
+            {row.purchase}
           </span>
         );
       },
     },
     {
       title: "Venda",
-      key: "address",
-      render: (row: Quote) => {
+      key: "sale",
+      render: (row: QuoteFormated) => {
         return (
-          <span>
-            {new Intl.NumberFormat("de-DE").format(
-              convertQuote(currencyFrom, currencyTo, row)?.salePrice *
-                getCurrencyValue()
-            )}
-          </span>
+          <span className={isBestQuote(row.sale, "sale")}>{row.sale}</span>
         );
       },
     },
   ];
 };
 
-export const MyTable = ({
-  data,
-  currencyValue,
-  currencyTo,
-  currencyFrom,
-}: TableProps) => {
+export const MyTable = ({ data, exchangeType }: TableProps) => {
+  const bestQuote = data.reduce((acc, quote) => {
+    const quoteValue = currencyMaskToNumber(quote[exchangeType]);
+
+    return quoteValue > acc ? quoteValue : acc;
+  }, 0);
+
   return (
     <Table
       dataSource={data}
-      columns={getColumns({ currencyTo, currencyFrom, currencyValue })}
-      rowKey={(record) =>
-        `[${record?.city?.name}] ${record?.company} - ${record?.office?.name}`
-      }
+      columns={columnsConfig(exchangeType, bestQuote)}
+      rowKey={(row) => {
+        return row.key;
+      }}
     />
   );
 };

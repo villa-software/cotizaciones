@@ -12,6 +12,9 @@ import { Layout } from "../Layout";
 import { Loader } from "../Loader";
 import { MyTable } from "../Table";
 
+import { currencyMask, currencyMaskToNumber } from "../../utils/currency";
+import { convertQuote } from "src/utils/convertQuotes";
+
 const { Option } = Select;
 interface Props {
   language: Languages;
@@ -26,7 +29,12 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
   const [currencyValue, setCurrencyValue] = useState<string>("1");
   const [currentCities, setCurrentCities] = useState<City[]>([defaultCity]);
   const [selectedCity, setSelectedCity] = useState<number>();
+  const [exchangeType, setExchangeType] = useState<"purchase" | "sale">(
+    "purchase"
+  );
   // const [onSelectedCities, setOnSelectedCities] = useState<number[]>();
+
+  console.log({ data });
 
   const [dataQuota, setDataQuota] = useState<Quote[]>(data);
   const [isLoading, setIsLoading] = useState(false);
@@ -56,6 +64,8 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
   async function handleGetQuotes() {
     setIsLoading(true);
 
+    console.log({ selectedCity });
+
     const data = await getQuotes(selectedCity).finally(() =>
       setIsLoading(false)
     );
@@ -65,6 +75,25 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
         return [...oldData, ...data];
       });
     }
+  }
+
+  function getPurchaseOrSale(from: string, to: string) {
+    const cases = {
+      brl: {
+        pyg: "purchase",
+        usd: "purchase",
+      },
+      pyg: {
+        brl: "sale",
+        usd: "sale",
+      },
+      usd: {
+        brl: "sale",
+        pyg: "purchase",
+      },
+    };
+
+    return cases[from][to];
   }
 
   useEffect(() => {
@@ -80,11 +109,13 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
           setCurrencyTo("pyg");
       }
     }
+
+    setExchangeType(() => getPurchaseOrSale(currencyFrom, currencyTo));
   }, [currencyFrom, currencyTo]);
 
   useEffect(() => {
     handleGetQuotes();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCity]);
 
   const handleChange = (values: Array<number>) => {
@@ -98,9 +129,39 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
 
   const onDeselect = (cityId: any) => {
     setDataQuota((oldData) => {
-      return oldData.filter((quota) => quota.city.id !== cityId);
+      return oldData.filter(
+        (quota, index) =>
+          quota.city.id !== cityId && {
+            ...quota,
+            index,
+          }
+      );
     });
   };
+
+  const dataQuoteTable = dataQuota
+    .map((quota, index) => ({
+      key: `${quota?.city?.name} ${quota?.company} - ${quota?.office?.name}`,
+      index: index,
+      city_company_office: (
+        <span>
+          <b>{quota?.city?.name}</b> {quota?.company} - {quota?.office?.name}
+        </span>
+      ),
+      purchase: new Intl.NumberFormat("de-DE").format(
+        convertQuote(currencyFrom, currencyTo, quota)?.purchasePrice *
+          currencyMaskToNumber(currencyValue)
+      ),
+      sale: new Intl.NumberFormat("de-DE").format(
+        convertQuote(currencyFrom, currencyTo, quota)?.salePrice *
+          currencyMaskToNumber(currencyValue)
+      ),
+    }))
+    .sort((a, b) => {
+      if (a[exchangeType] > b[exchangeType]) return -1;
+      if (a[exchangeType] < b[exchangeType]) return 1;
+      return 0;
+    });
 
   return (
     <Layout title="Create Next App">
@@ -207,9 +268,10 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
               <InputGroup label="Valor:">
                 <Input
                   value={currencyValue}
-                  onChange={(e: any) => setCurrencyValue(e.target.value)}
+                  onChange={(e) =>
+                    setCurrencyValue(currencyMask(e.target.value))
+                  }
                   placeholder="Digite o valor"
-                  type="number"
                   size="large"
                 />
               </InputGroup>
@@ -245,12 +307,7 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
           }}
         >
           <Loader loading={isLoading} />
-          <MyTable
-            data={dataQuota}
-            currencyValue={currencyValue}
-            currencyFrom={currencyFrom}
-            currencyTo={currencyTo}
-          />
+          <MyTable exchangeType={exchangeType} data={dataQuoteTable} />
         </Box>
       </Box>
     </Layout>
