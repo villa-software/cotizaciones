@@ -1,16 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { useRouter } from 'next/router';
 import axios from 'axios';
-import { CHACO_OFFICES, CITIES, SANTA_RITA_CAMBIOS_OFFICES } from 'src/utils/consts';
+import { CETEG_OFFICES, CHACO_OFFICES, CITIES, SANTA_RITA_CAMBIOS_OFFICES } from 'src/utils/consts';
 //@ts-ignore
 import asyncPipe from 'pipeawait';
 import { curry, map, filter } from 'lodash/fp';
 import { successResponse } from 'src/utils/response.utils';
 import { Office } from 'src/types';
+import { currencyMaskToNumber } from 'src/utils/currency';
 ;
-const getChaco = async () => await Promise.all(CHACO_OFFICES.map(async office => axios.get(`https://www.cambioschaco.com.py/api/branch_office/${office.branchId}/exchange`)));
-const mapChaco = (item: any) => { 
-    if(item.data.length === 0) {
+
+const mapChaco = (item: any) => {
+    if (item.data.length === 0) {
         return;
     }
     const office = CHACO_OFFICES.find(office => office.branchId === parseInt(item.data.branchOfficeId));
@@ -20,27 +20,27 @@ const mapChaco = (item: any) => {
         city: CITIES.find(city => city.id === office?.city),
         branchOfficeId: item.data.branchOfficeId,
         usd: {
-            purchasePrice: item.data.items.find((currency:any) => currency.isoCode === 'USD').purchasePrice,
-            salePrice: item.data.items.find((currency:any) => currency.isoCode === 'USD').salePrice,
+            purchasePrice: item.data.items.find((currency: any) => currency.isoCode === 'USD').purchasePrice,
+            salePrice: item.data.items.find((currency: any) => currency.isoCode === 'USD').salePrice,
         },
         brl: {
-            purchasePrice: item.data.items.find((currency:any) => currency.isoCode === 'BRL').purchasePrice,
-            salePrice: item.data.items.find((currency:any) => currency.isoCode === 'BRL').salePrice,
+            purchasePrice: item.data.items.find((currency: any) => currency.isoCode === 'BRL').purchasePrice,
+            salePrice: item.data.items.find((currency: any) => currency.isoCode === 'BRL').salePrice,
         },
         ars: {
-            purchasePrice: item.data.items.find((currency:any) => currency.isoCode === 'ARS').purchasePrice,
-            salePrice: item.data.items.find((currency:any) => currency.isoCode === 'ARS').salePrice,
+            purchasePrice: item.data.items.find((currency: any) => currency.isoCode === 'ARS').purchasePrice,
+            salePrice: item.data.items.find((currency: any) => currency.isoCode === 'ARS').salePrice,
         },
         eur: {
-            purchasePrice: item.data.items.find((currency:any) => currency.isoCode === 'EUR').purchasePrice,
-            salePrice: item.data.items.find((currency:any) => currency.isoCode === 'EUR').salePrice,
+            purchasePrice: item.data.items.find((currency: any) => currency.isoCode === 'EUR').purchasePrice,
+            salePrice: item.data.items.find((currency: any) => currency.isoCode === 'EUR').salePrice,
         },
         defaultCurrency: 'PYG'
     }
 };
-const getSantaRita2 = async () => await Promise.all(SANTA_RITA_CAMBIOS_OFFICES.map(async office => await axios.get(`http://admin.santaritacambios.com.py/rest/get-quotes?s=${office.branchId}`)));
-const mapSantaRita2 = (item: any,stOffice: Office) => { 
-    return { 
+
+const mapSantaRita = (item: any, stOffice: Office) => {
+    return {
         company: "SANTA RITA CAMBIOS",
         office: stOffice,
         branchOfficeId: stOffice.branchId,
@@ -64,55 +64,95 @@ const mapSantaRita2 = (item: any,stOffice: Office) => {
         defaultCurrency: 'PYG'
     };
 };
-const getSantaRita = async (currentValues: Array<any>) => {
-    const santaRitaData = await Promise.all(SANTA_RITA_CAMBIOS_OFFICES.map(async office => {
-        const item = await axios.get(`http://admin.santaritacambios.com.py/rest/get-quotes?s=${office.branchId}`);
-        return { 
-            company: "SANTA RITA CAMBIOS",
-            office,
-            branchOfficeId: 0,
-            usd: {
-                purchasePrice: parseInt(item.data.quotes['USDxPYG'].amount_buy),
-                salePrice: parseInt(item.data.quotes['USDxPYG'].amount_sell),
-            },
-            brl: {
-                purchasePrice: parseInt(item.data.quotes['BRLxPYG'].amount_buy),
-                salePrice: parseInt(item.data.quotes['BRLxPYG'].amount_sell),
-            },
-            ars: {
-                purchasePrice: parseInt(item.data.quotes['ARSxPYG'].amount_buy),
-                salePrice: parseInt(item.data.quotes['ARSxPYG'].amount_sell),
-            },
-            eur: {
-                purchasePrice: parseInt(item.data.quotes['EURxPYG'].amount_buy),
-                salePrice: parseInt(item.data.quotes['EURxPYG'].amount_sell),
-            },
-            defaultCurrency: 'PYG'
-        };
-    }));
-    return [...currentValues, ...santaRitaData];
+
+enum CETEG_CURRENCY_ID {
+    USD = "1",
+    BRL = "2",
+    ARS = "3",
+    PYG = "5"
 }
-   
+
+const mapCeteg = (item, cetegOffice) => {
+
+    console.log({ item, cetegOffice })
+    return {
+        company: "CETEG CAMBIOS SA",
+        office: cetegOffice,
+        branchOfficeId: cetegOffice.branchId,
+        city: CITIES.find((city) => city.id === cetegOffice.city),
+        usd: {
+            purchasePrice: currencyMaskToNumber(item.data.find(
+                (item) =>
+                    item.idmoneda1 === CETEG_CURRENCY_ID.USD &&
+                    item.idmoneda2 == CETEG_CURRENCY_ID.PYG
+            ).compra),
+            salePrice: currencyMaskToNumber(item.data.find(
+                (item) =>
+                    item.idmoneda1 === CETEG_CURRENCY_ID.USD &&
+                    item.idmoneda2 == CETEG_CURRENCY_ID.PYG
+            ).venta)
+        },
+        brl: {
+            purchasePrice: currencyMaskToNumber(item.data.find(
+                (item) =>
+                    item.idmoneda1 === CETEG_CURRENCY_ID.BRL &&
+                    item.idmoneda2 == CETEG_CURRENCY_ID.PYG
+            ).compra),
+            salePrice: currencyMaskToNumber(item.data.find(
+                (item) =>
+                    item.idmoneda1 === CETEG_CURRENCY_ID.BRL &&
+                    item.idmoneda2 == CETEG_CURRENCY_ID.PYG
+            ).venta)
+        },
+        ars: {
+            purchasePrice: currencyMaskToNumber(item.data.find(
+                (item) =>
+                    item.idmoneda1 === CETEG_CURRENCY_ID.ARS &&
+                    item.idmoneda2 == CETEG_CURRENCY_ID.PYG
+            ).compra),
+            salePrice: currencyMaskToNumber(item.data.find(
+                (item) =>
+                    item.idmoneda1 === CETEG_CURRENCY_ID.ARS &&
+                    item.idmoneda2 == CETEG_CURRENCY_ID.PYG
+            ).venta)
+        },
+        eur: {
+            purchasePrice: null,
+            salePrice: null
+        },
+        defaultCurrency: "PYG"
+    };
+};
+
 const getDefaultCityOffices = async () => {
     const defaultCity = CITIES.find(city => city.default);
     const chacoOffices = CHACO_OFFICES.filter(office => office.city === defaultCity?.id);
     const santaRitaOffices = SANTA_RITA_CAMBIOS_OFFICES.filter(office => office.city === defaultCity?.id);
+    const cetegOffices = CETEG_OFFICES.filter(office => office.city === defaultCity?.id)
 
     const chacoData = await Promise.all(chacoOffices.map(async office => axios.get(`https://www.cambioschaco.com.py/api/branch_office/${office.branchId}/exchange`)));
-    const sanaRitaData = [];
+    const santaRitaData = [];
     for (let index = 0; index < santaRitaOffices.length; index++) {
         const stOffice = santaRitaOffices[index];
         const santaRita = await axios.get(`http://admin.santaritacambios.com.py/rest/get-quotes?s=${stOffice.branchId}`);
-        sanaRitaData.push(mapSantaRita2(santaRita, stOffice));
+        santaRitaData.push(mapSantaRita(santaRita, stOffice));
     }
 
-    const result = [...chacoData.map(mapChaco), ...sanaRitaData];
+    const cetegData = []
+    for (let index = 0; index < cetegOffices.length; index++) {
+        const cetegOffice = cetegOffices[index];
+        console.log(`https://www.ceteg.com.py/api/cotizacion/${cetegOffice.branchId}`)
+        const { data } = await axios.get(`https://www.ceteg.com.py/api/cotizacion/${cetegOffice.branchId}`);
+        cetegData.push(mapCeteg(data, cetegOffice));
+    }
+
+    const result = [...chacoData.map(mapChaco), ...santaRitaData, ...cetegData];
     return result;
 }
 
 const quotes = async (
-  req: NextApiRequest,
-  res: NextApiResponse<any>
+    req: NextApiRequest,
+    res: NextApiResponse<any>
 ) => {
     const data = await asyncPipe(
         getDefaultCityOffices,

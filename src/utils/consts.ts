@@ -33,7 +33,7 @@ export const CITIES: City[] = [
 export const SANTA_RITA_CAMBIOS_OFFICES: Office[] = [
     { id: 1, branchId: 1, name: 'Matrix', city: 1 },
     { id: 2, branchId: 2, name: 'Santa Rosa', city: 11 },
-    { id: 3, branchId: 3, name: 'Katuete', city: 10},
+    { id: 3, branchId: 3, name: 'Katuete', city: 10 },
     { id: 4, branchId: 5, name: 'Santa Rita', city: 8 },
 ];
 export const CHACO_OFFICES: Office[] = [
@@ -61,8 +61,10 @@ export const CHACO_OFFICES: Office[] = [
     { id: 25, branchId: 28, name: 'Sucursal Pedro Juan Caballero', city: 9 },
     { id: 26, branchId: 29, name: 'Agencia Pedro Juan Caballero', city: 9 },
 ];
+export const CETEG_OFFICES: Office[] = [
+    { id: 1, branchId: 19, name: 'Santa Rita', city: 8 },
+]
 
 
 
 
-						

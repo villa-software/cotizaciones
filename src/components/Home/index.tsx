@@ -34,6 +34,8 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
   );
   // const [onSelectedCities, setOnSelectedCities] = useState<number[]>();
 
+  console.log({ data });
+
   const [dataQuota, setDataQuota] = useState<Quote[]>(data);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -61,6 +63,8 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
 
   async function handleGetQuotes() {
     setIsLoading(true);
+
+    console.log({ selectedCity });
 
     const data = await getQuotes(selectedCity).finally(() =>
       setIsLoading(false)
