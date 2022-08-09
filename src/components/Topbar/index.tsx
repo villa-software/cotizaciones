@@ -12,16 +12,19 @@ export const Topbar = ({ hasScrolled }: Props) => {
   const [currentLanguage, setCurrentLanguage] = useState<Languages>("es");
   const { route, push: redirectTo } = useRouter();
 
-  const languages: { value: Languages; label: "PT" | "ES" }[] = useMemo(() => ([
-    {
-      value: "pt",
-      label: "PT",
-    },
-    {
-      value: "es",
-      label: "ES",
-    },
-  ]), []);
+  const languages: { value: Languages; label: "PT" | "ES" }[] = useMemo(
+    () => [
+      {
+        value: "pt",
+        label: "PT",
+      },
+      {
+        value: "es",
+        label: "ES",
+      },
+    ],
+    []
+  );
 
   const handleChange = (
     event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -63,7 +66,7 @@ export const Topbar = ({ hasScrolled }: Props) => {
         src={
           hasScrolled ? "/logos/ideia-logo-02.svg" : "/logos/ideia-logo-03.svg"
         }
-        width="200px"
+        width="150px"
         height="40px"
         objectFit="contain"
         alt="cotizacionespy"
