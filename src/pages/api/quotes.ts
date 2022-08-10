@@ -5,11 +5,11 @@ import { CETEG_OFFICES, CHACO_OFFICES, CITIES, SANTA_RITA_CAMBIOS_OFFICES } from
 import asyncPipe from 'pipeawait';
 import { curry, map, filter } from 'lodash/fp';
 import { successResponse } from 'src/utils/response.utils';
-import { Office } from 'src/types';
+import { Office, Quote } from 'src/types';
 import { currencyMaskToNumber } from 'src/utils/currency';
 ;
 
-const mapChaco = (item: any) => {
+const mapChaco = (item: any): Quote | undefined => {
     if (item.data.length === 0) {
         return;
     }
@@ -39,7 +39,7 @@ const mapChaco = (item: any) => {
     }
 };
 
-const mapSantaRita = (item: any, stOffice: Office) => {
+const mapSantaRita = (item: any, stOffice: Office): Quote => {
     return {
         company: "SANTA RITA CAMBIOS",
         office: stOffice,
@@ -72,9 +72,7 @@ enum CETEG_CURRENCY_ID {
     PYG = "5"
 }
 
-const mapCeteg = (item, cetegOffice) => {
-
-    console.log({ item, cetegOffice })
+const mapCeteg = (item, cetegOffice): Quote => {
     return {
         company: "CETEG CAMBIOS SA",
         office: cetegOffice,
@@ -117,8 +115,8 @@ const mapCeteg = (item, cetegOffice) => {
             ).venta)
         },
         eur: {
-            purchasePrice: null,
-            salePrice: null
+            purchasePrice: 0,
+            salePrice: 0
         },
         defaultCurrency: "PYG"
     };
@@ -131,17 +129,16 @@ const getDefaultCityOffices = async () => {
     const cetegOffices = CETEG_OFFICES.filter(office => office.city === defaultCity?.id)
 
     const chacoData = await Promise.all(chacoOffices.map(async office => axios.get(`https://www.cambioschaco.com.py/api/branch_office/${office.branchId}/exchange`)));
-    const santaRitaData = [];
+    const santaRitaData: Quote[] = [];
     for (let index = 0; index < santaRitaOffices.length; index++) {
         const stOffice = santaRitaOffices[index];
         const santaRita = await axios.get(`http://admin.santaritacambios.com.py/rest/get-quotes?s=${stOffice.branchId}`);
         santaRitaData.push(mapSantaRita(santaRita, stOffice));
     }
 
-    const cetegData = []
+    const cetegData: Quote[] = []
     for (let index = 0; index < cetegOffices.length; index++) {
         const cetegOffice = cetegOffices[index];
-        console.log(`https://www.ceteg.com.py/api/cotizacion/${cetegOffice.branchId}`)
         const { data } = await axios.get(`https://www.ceteg.com.py/api/cotizacion/${cetegOffice.branchId}`);
         cetegData.push(mapCeteg(data, cetegOffice));
     }

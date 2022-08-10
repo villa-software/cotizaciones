@@ -50,7 +50,7 @@ export const CHACO_OFFICES: Office[] = [
     { id: 11, branchId: 11, name: 'Itá Ybate - CDE', city: 5 },
     { id: 15, branchId: 12, name: 'Ag. Shopping Jesuiticas', city: 5 },
     { id: 16, branchId: 13, name: 'Noblesse - KM 3,5 - CDE', city: 5 },
-    { id: 17, branchId: 16, name: 'CDE - Agencia Ita Piru', city: 5 },
+    /* { id: 17, branchId: 16, name: 'CDE - Agencia Ita Piru', city: 5 }, */
     { id: 18, branchId: 32, name: 'Agencia CDE - Km7 - 2', city: 5 },
     { id: 19, branchId: 20, name: 'Hernandarias', city: 6 },
     { id: 20, branchId: 22, name: 'Itaipú', city: 6 },

@@ -26,13 +26,14 @@ export type QuoteCurrency = {
 
 export type Quote = {
     company: string;
-    office: Office;
-    city: City;
-    branchOfficeId: string;
+    office: Office | undefined;
+    city: City | undefined;
+    branchOfficeId: number;
     usd: QuoteCurrency;
     brl: QuoteCurrency;
     ars: QuoteCurrency;
     eur: QuoteCurrency;
+    defaultCurrency?: string;
 }
 
 export type QuoteFormatedTable = {
