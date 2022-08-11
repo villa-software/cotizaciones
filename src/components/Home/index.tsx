@@ -211,14 +211,14 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
               width: "100%",
             }}
           >
-            <h2>Conversor de moedas:</h2>
+            <h2>Conversor de monedas:</h2>
 
             <Box
               style={{
                 margin: "2rem 0",
               }}
             >
-              <InputGroup label="Selecione a cidade">
+              <InputGroup label="Seleccione la ciudad">
                 <Select
                   mode="multiple"
                   allowClear
@@ -246,7 +246,7 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
                 gap: "1rem",
               }}
             >
-              <InputGroup label="Tenho:">
+              <InputGroup label="Tengo:">
                 <Select
                   value={currencyFrom}
                   style={{ width: "100%" }}
@@ -267,12 +267,12 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
                   onChange={(e) =>
                     setCurrencyValue(currencyMask(e.target.value))
                   }
-                  placeholder="Digite o valor"
+                  placeholder="Ingrese el valor"
                   size="large"
                 />
               </InputGroup>
 
-              <InputGroup label="Quero:">
+              <InputGroup label="Quiero:">
                 <Select
                   value={currencyTo}
                   style={{ width: "100%" }}
