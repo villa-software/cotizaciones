@@ -53,10 +53,10 @@ export const CHACO_OFFICES: Office[] = [
     /* { id: 17, branchId: 16, name: 'CDE - Agencia Ita Piru', city: 5 }, */
     { id: 18, branchId: 32, name: 'Agencia CDE - Km7 - 2', city: 5 },
     { id: 19, branchId: 20, name: 'Hernandarias', city: 6 },
-    { id: 20, branchId: 22, name: 'Itaipú', city: 6 },
+    /* { id: 20, branchId: 22, name: 'Itaipú', city: 6 }, */
     { id: 21, branchId: 23, name: 'Sucursal Super 6 - ENC', city: 7 },
-    { id: 22, branchId: 24, name: 'Zona Alta - ENC', city: 7 },
-    { id: 23, branchId: 19, name: 'EBY  Circuito Comercial - ENC', city: 7 },
+    /* { id: 22, branchId: 24, name: 'Zona Alta - ENC', city: 7 }, */
+    /*     { id: 23, branchId: 19, name: 'EBY  Circuito Comercial - ENC', city: 7 }, */
     { id: 24, branchId: 27, name: 'Sucursal Santa Rita', city: 8 },
     { id: 25, branchId: 28, name: 'Sucursal Pedro Juan Caballero', city: 9 },
     { id: 26, branchId: 29, name: 'Agencia Pedro Juan Caballero', city: 9 },
