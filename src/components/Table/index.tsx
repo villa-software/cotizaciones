@@ -32,11 +32,11 @@ const columnsConfig = (
       title: "Casa de Câmbio",
       key: "city_company_office",
       render: (row: QuoteFormated) => (
-        <span
+        <p
           className={isBestQuoteCompany(row[exchangeType]) ? "best-quote" : ""}
         >
           {row.city_company_office}
-        </span>
+        </p>
       ),
     },
     {
