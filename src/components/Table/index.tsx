@@ -29,7 +29,7 @@ const columnsConfig = (
 
   return [
     {
-      title: "Casa de Câmbio",
+      title: "Casa de Cambio",
       key: "city_company_office",
       render: (row: QuoteFormated) => (
         <p
@@ -51,7 +51,7 @@ const columnsConfig = (
       },
     },
     {
-      title: "Venda",
+      title: "Venta",
       key: "sale",
       render: (row: QuoteFormated) => {
         return (
