@@ -1,6 +1,7 @@
-.ant-table-row span, p {
+.ant-table-row span {
     padding: .25rem;
     border: solid 2px transparent;
+    display: block;
 }
 
 .ant-table-row .best-quote {
