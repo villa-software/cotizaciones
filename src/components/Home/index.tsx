@@ -242,7 +242,7 @@ const Home: NextPage<Props> = ({ data, language, cities, defaultCity }) => {
             <Box
               style={{
                 display: "grid",
-                gridTemplateColumns: "6rem 2fr 6rem",
+                gridTemplateColumns: "4.8rem 2fr 4.8rem",
                 gap: "1rem",
               }}
             >
